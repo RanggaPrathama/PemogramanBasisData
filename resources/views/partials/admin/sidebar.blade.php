@@ -22,8 +22,18 @@
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
+            <a href="{{ route('vendor.index') }}">
+              <i class="bi bi-circle"></i><span>Vendor Table</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('satuan.index') }}">
+              <i class="bi bi-circle"></i><span>Satuan Table</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('barang.index') }}">
+              <i class="bi bi-circle"></i><span>Barang Table</span>
             </a>
           </li>
         </ul>

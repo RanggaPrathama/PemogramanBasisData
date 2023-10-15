@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Vendor;
 use App\Http\Requests\StoreVendorRequest;
 use App\Http\Requests\UpdateVendorRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VendorController extends Controller
 {
@@ -13,7 +15,11 @@ class VendorController extends Controller
      */
     public function index()
     {
-        //
+        $vendors= DB::table('vendors')
+                ->select('*')
+                ->get();
+
+        return view('pages.admin.table.vendor.index',['vendors'=>$vendors]);
     }
 
     /**
@@ -21,15 +27,30 @@ class VendorController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.admin.table.vendor.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVendorRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validateddata = $request->validate([
+            'nama_vendor'=>'required|unique:vendors,nama_vendor',
+            'badan_hukum'=>'required'
+        ],[
+            'nama_vendor.required'=>'Nama Vendor Harus Diisi',
+            'badan_hukum.required'=>'Badan Hukum Harus Diisi',
+            'nama_vendor.unique'=>'nama_vendor sudah ada ',
+        ]);
+
+        $vendor = Vendor::create($validateddata);
+        if($vendor){
+            return redirect()->route('vendor.index')->with('success','Berhasil !');
+        }
+        else{
+            return redirect()->back()->withInput()->with('errors','Gagal !');
+        }
     }
 
     /**
@@ -43,24 +64,58 @@ class VendorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vendor $vendor)
+    public function edit($id)
     {
-        //
+        $vendors= DB::table('vendors')
+            ->select('*')
+            ->where('id_vendor',$id)
+            ->first();
+
+        return view('pages.admin.table.vendor.update',['vendors'=>$vendors]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVendorRequest $request, Vendor $vendor)
+    public function update(Request $request,$id)
     {
-        //
+        $validateddata = $request->validate([
+            'nama_vendor'=>'required|unique:vendors,nama_vendor',
+            'badan_hukum'=>'required'
+        ],[
+            'nama_vendor.required'=>'Nama Vendor Harus Diisi',
+            'badan_hukum.required'=>'Badan Hukum Harus Diisi',
+            'nama_vendor.unique'=>'nama_vendor sudah ada ',
+        ]);
+
+        $vendors = Vendor::where('id_vendor',$id);
+        $valid = $vendors->update($validateddata);
+        if($valid){
+            return redirect()->route('vendor.index')->with('success','Berhasil di Update !');
+        }
+        else{
+            return redirect()->back()->withInput()->with('errors','Gagal !');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Vendor $vendor)
+    public function destroy($id)
     {
-        //
+        $vendors = Vendor::where('id_vendor',$id);
+        $valid= $vendors->update(['status'=>0]);
+        if($valid){
+            return redirect()->route('vendor.index')->with('success','Berhasil Terhapus !');
+        }
+
     }
+
+    public function restore($id){
+        $vendors = Vendor::where('id_vendor',$id);
+        $valid= $vendors->update(['status'=>1]);
+        if($valid){
+            return redirect()->route('vendor.index')->with('success','Berhasil di Restore !');
+    }
+}
 }

@@ -5,13 +5,13 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Table Role</h1>
+        <h1>Table Satuan</h1>
 
         <nav>
             <ol class='breadcrumb'>
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Tables</li>
-                <li class="breadcrumb-item active">Role Table</li>
+                <li class="breadcrumb-item active">Satuan Table</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -22,15 +22,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Tambah Data Role </h5>
+                      <h5 class="card-title">Tambah Data Satuan </h5>
 
                       <!-- Vertical Form -->
-                      <form class="row g-3" action="{{ route('role.store') }}" enctype="multipart/form-data" method="POST">
+                      <form class="row g-3" action="{{ route('satuan.store') }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         <div class="col-12">
-                          <label for="inputNanme4" class="form-label">Nama Role</label>
-                          <input type="text" class="form-control @error('nama_role') is-invalid @enderror"  name="nama_role">
-                          @error('nama_role')
+                          <label for="inputNanme4" class="form-label">Nama Satuan</label>
+                          <input type="text" class="form-control @error('nama_role') is-invalid @enderror"  name="nama_satuan">
+                          @error('nama_satuan')
                             <div class='invalid-feedback'>{{ $message }}</div>
                           @enderror
                         </div>
@@ -54,10 +54,10 @@
 
         var resetButton = document.querySelector("button[type='reset']");
 
-        var inputNamaRole = document.querySelector("input[name='nama_role']");
+        var inputNamaSatuan = document.querySelector("input[name='nama_satuan']");
 
         resetButton.addEventListener("click", function() {
-            inputNamaRole.value = "";
+            inputNamaSatuan.value = "";
         });
     });
 </script>

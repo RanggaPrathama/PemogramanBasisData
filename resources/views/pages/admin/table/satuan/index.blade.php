@@ -7,13 +7,13 @@
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Table Vendor</h1>
+                <h1>Table Satuan</h1>
 
                 <nav>
                     <ol class='breadcrumb'>
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Vendor Table</li>
+                        <li class="breadcrumb-item active">Satuan Table</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -43,44 +43,43 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">CRUD Table Vendor</h3>
+                                <h3 class="card-title">CRUD Table Satuan</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('vendor.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
+                                <a href="{{ route('satuan.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
                                 </button></a>
 
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
                                         <tr>
-                                            <th scope="col">id Vendor</th>
-                                            <th scope="col">Nama Vendor</th>
-                                            <th scope="col">Badan Hukum</th>
+                                            <th scope="col">id Satuan</th>
+                                            <th scope="col">Nama Satuan</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($vendors as $vendor)
+                                        @foreach ($satuans as $satuan)
                                             <tr>
-                                                <th scope="row">{{ $vendor->id_vendor }}</th>
-                                                <td>{{ $vendor->nama_vendor }}</td>
-                                                <td>{{ $vendor->badan_hukum }}</td>
+                                                <th scope="row">{{ $satuan->id_satuan }}</th>
+                                                <td>{{ $satuan->nama_satuan}}</td>
+
                                                 <td>
-                                                    @if($vendor->status == 0)
-                                                    <h6>Tidak Aktif</h6></h6>
+                                                    @if($satuan->status == 0)
+                                                    <h6>Tidak Aktif</h6>
 
                                                     @else
                                                     <h6>Aktif</h6>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($vendor->status == 1)
-                                                    <a href="{{ route('vendor.edit',$vendor->id_vendor) }}"> <button class="btn btn-success"><i
+                                                    @if($satuan->status == 1)
+                                                    <a href="{{ route('satuan.edit',$satuan->id_satuan) }}"> <button class="btn btn-success"><i
                                                                 class="bi bi-pencil-square"></i></button></a>
 
-                                                                <form action="{{ route('vendor.destroy', $vendor->id_vendor) }}"
+                                                                <form action="{{ route('satuan.destroy', $satuan->id_satuan) }}"
                                                                     method="POST" style="display: inline-block;">
                                                                     @csrf
                                                                     @method('DELETE')
@@ -90,7 +89,7 @@
 
                                                                 </form>
                                                                 @else
-                                                                <form action="{{ route('vendor.restore',$vendor->id_vendor) }}"
+                                                                <form action="{{ route('satuan.restore',$satuan->id_satuan) }}"
                                                                     method="POST" style="display: inline-block;">
                                                                     @csrf
                                                                     @method('PUT')
@@ -118,7 +117,7 @@
 
         </main><!-- End #main -->
 
-               <!-- jQuery -->
+             <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
