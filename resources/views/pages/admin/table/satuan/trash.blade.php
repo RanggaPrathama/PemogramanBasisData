@@ -7,13 +7,13 @@
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Table Role</h1>
+                <h1>Table Satuan</h1>
 
                 <nav>
                     <ol class='breadcrumb'>
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Role Table</li>
+                        <li class="breadcrumb-item active">Satuan Table</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -43,52 +43,55 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">CRUD Table Role</h3>
+                                <h3 class="card-title">Trash Table Satuan</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('role.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
+                                <a href="{{ route('satuan.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Satuan
                                 </button></a>
 
-                                <a href="{{ route('role.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
-                                </button></a>
+                                <form action="{{ route('satuan.restoreall') }}"
+                                method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
+                                class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
+                            </form>
+
 
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
                                         <tr>
-                                            <th scope="col">id Role</th>
-                                            <th scope="col">Nama Role</th>
+                                            <th scope="col">id Satuan</th>
+                                            <th scope="col">Nama Satuan</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($roles as $role)
+                                        @foreach ($satuans as $satuan)
                                             <tr>
-                                                <th scope="row">{{ $role->id_role }}</th>
-                                                <td>{{ $role->nama_role }}</td>
+                                                <th scope="row">{{ $satuan->id_satuan }}</th>
+                                                <td>{{ $satuan->nama_satuan}}</td>
 
                                                 <td>
-                                                    @if($role->status == 1)
-                                                    <h6>Aktif</h6>
+                                                    @if($satuan->status == 0)
+                                                    <h6>Tidak Aktif</h6>
 
-                                                  
+
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($role->status == 1)
-                                                    <a href="{{ route('role.edit',$role->id_role) }}"> <button class="btn btn-success"><i
-                                                                class="bi bi-pencil-square"></i></button></a>
+                                                    @if($satuan->status == 0)
 
-                                                                <form action="{{ route('role.destroy', $role->id_role) }}"
+
+                                                                <form action="{{ route('satuan.restore',$satuan->id_satuan) }}"
                                                                     method="POST" style="display: inline-block;">
                                                                     @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus data ?')"
-                                                                    class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
-
-
+                                                                    @method('PUT')
+                                                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
+                                                                    class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
                                                                 </form>
                                                                 @endif
 
@@ -111,7 +114,7 @@
 
         </main><!-- End #main -->
 
-            <!-- jQuery -->
+             <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -128,7 +131,6 @@
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
 
 <script>
     $(function () {

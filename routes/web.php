@@ -5,6 +5,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\VendorController;
+use App\Models\Satuan;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +35,8 @@ Route::get('/role/edit/{id}',[RoleController::class,'edit'])->name('role.edit');
 Route::put('/role/edit/{id}',[RoleController::class,'update'])->name('role.update');
 Route::delete('/role/delete/{id}',[RoleController::class,'destroy'])->name('role.destroy');
 Route::put('/role/restore/{id}',[RoleController::class,'restore'])->name('role.restore');
+Route::get('/role/trash',[RoleController::class,'trash'])->name('role.trash');
+Route::put('/role/restoreall',[RoleController::class,'restoreall'])->name('role.restoreall');
 
 //Table Vendor
 Route::get('/vendor',[VendorController::class,'index'])->name('vendor.index');
@@ -42,6 +46,8 @@ Route::get('/vendor/edit/{id}',[VendorController::class,'edit'])->name('vendor.e
 Route::put('/vendor/edit/{id}',[VendorController::class,'update'])->name('vendor.update');
 Route::delete('/vendor/delete/{id}',[VendorController::class,'destroy'])->name('vendor.destroy');
 Route::put('/vendor/restore/{id}',[VendorController::class,'restore'])->name('vendor.restore');
+Route::get('/vendor/trash',[VendorController::class,'trash'])->name('vendor.trash');
+Route::put('/vendor/restoreall',[VendorController::class,'restoreall'])->name('vendor.restoreall');
 
 //TABLE Satuan
 Route::get('/satuan',[SatuanController::class,'index'])->name('satuan.index');
@@ -51,6 +57,9 @@ Route::get('satuan/edit/{id}',[SatuanController::class,'edit'])->name('satuan.ed
 Route::put('satuan/edit/{id}',[SatuanController::class,'update'])->name('satuan.update');
 Route::delete('satuan/delete/{id}',[SatuanController::class,'destroy'])->name('satuan.destroy');
 Route::put('satuan/restore/{id}',[SatuanController::class,'restore'])->name('satuan.restore');
+Route::get('/satuan/trash',[SatuanController::class,'trash'])->name('satuan.trash');
+Route::put('/satuan/restoreall',[SatuanController::class,'restoreall'])->name('satuan.restoreall');
+
 
 //Table Barang
 Route::get('/barang',[BarangController::class,'index'])->name('barang.index');

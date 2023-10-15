@@ -17,10 +17,23 @@ class VendorController extends Controller
     {
         $vendors= DB::table('vendors')
                 ->select('*')
+                ->where('status',1)
                 ->get();
 
         return view('pages.admin.table.vendor.index',['vendors'=>$vendors]);
     }
+
+    public function trash()
+    {
+        $vendors= DB::table('vendors')
+                ->select('*')
+                ->where('status',0)
+                ->get();
+
+        return view('pages.admin.table.vendor.trash',['vendors'=>$vendors]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -115,7 +128,11 @@ class VendorController extends Controller
         $vendors = Vendor::where('id_vendor',$id);
         $valid= $vendors->update(['status'=>1]);
         if($valid){
-            return redirect()->route('vendor.index')->with('success','Berhasil di Restore !');
+            return redirect()->route('vendor.trash')->with('success','Berhasil di Restore !');
     }
+}
+public function restoreall(){
+    Vendor::where('status', 0)->update(['status' => 1]);
+    return redirect()->route('vendor.trash')->with('success','Data Berhasil Di Restore Semua');
 }
 }

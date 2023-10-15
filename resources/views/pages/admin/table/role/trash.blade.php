@@ -43,15 +43,24 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">CRUD Table Role</h3>
+                                <h3 class="card-title">Trash Table Role</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('role.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
+                                <a href="{{ route('role.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Role
                                 </button></a>
 
-                                <a href="{{ route('role.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
+                                <form action="{{ route('role.restoreall') }}"
+                                    method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
+                                    class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
+                                </form>
+
                                 </button></a>
+
+
 
                                 <table id="example1" class="table table-bordered table-striped">
 
@@ -70,25 +79,21 @@
                                                 <td>{{ $role->nama_role }}</td>
 
                                                 <td>
-                                                    @if($role->status == 1)
-                                                    <h6>Aktif</h6>
+                                                    @if($role->status == 0)
+                                                    <h6>Tidak Aktif</h6>
 
-                                                  
+
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($role->status == 1)
-                                                    <a href="{{ route('role.edit',$role->id_role) }}"> <button class="btn btn-success"><i
-                                                                class="bi bi-pencil-square"></i></button></a>
+                                                    @if($role->status == 0)
 
-                                                                <form action="{{ route('role.destroy', $role->id_role) }}"
+                                                                <form action="{{ route('role.restore',$role->id_role) }}"
                                                                     method="POST" style="display: inline-block;">
                                                                     @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus data ?')"
-                                                                    class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
-
-
+                                                                    @method('PUT')
+                                                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
+                                                                    class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
                                                                 </form>
                                                                 @endif
 

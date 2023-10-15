@@ -50,6 +50,9 @@
                                 <a href="{{ route('vendor.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
                                 </button></a>
 
+                                <a href="{{ route('vendor.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
+                                </button></a>
+
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
@@ -68,10 +71,8 @@
                                                 <td>{{ $vendor->nama_vendor }}</td>
                                                 <td>{{ $vendor->badan_hukum }}</td>
                                                 <td>
-                                                    @if($vendor->status == 0)
-                                                    <h6>Tidak Aktif</h6></h6>
+                                                    @if($vendor->status == 1)
 
-                                                    @else
                                                     <h6>Aktif</h6>
                                                     @endif
                                                 </td>
@@ -89,14 +90,7 @@
 
 
                                                                 </form>
-                                                                @else
-                                                                <form action="{{ route('vendor.restore',$vendor->id_vendor) }}"
-                                                                    method="POST" style="display: inline-block;">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
-                                                                    class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
-
+                                                             
                                                                 @endif
 
                                                 </td>

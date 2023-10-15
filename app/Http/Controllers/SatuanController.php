@@ -17,8 +17,14 @@ class SatuanController extends Controller
     {
         $satuans = DB::table('satuans')
                     ->select('id_satuan','nama_satuan','status')
+                    ->where('status',1)
                     ->get();
         return view('pages.admin.table.satuan.index',['satuans'=>$satuans]);
+    }
+
+    public function trash(){
+        $satuans=DB::table('satuans')->select('id_satuan','nama_satuan','status')->where('status',0)->get();
+        return view('pages.admin.table.satuan.trash',['satuans'=>$satuans]);
     }
 
     /**
@@ -108,7 +114,11 @@ class SatuanController extends Controller
         $vendors = Satuan::where('id_satuan',$id);
         $valid= $vendors->update(['status'=>1]);
         if($valid){
-            return redirect()->route('satuan.index')->with('success','Berhasil di Restore !');
+            return redirect()->route('satuan.trash')->with('success','Berhasil di Restore !');
     }
+}
+public function restoreall(){
+    Satuan::where('status', 0)->update(['status' => 1]);
+    return redirect()->route('satuan.trash')->with('success','Data Berhasil Di Restore Semua');
 }
 }

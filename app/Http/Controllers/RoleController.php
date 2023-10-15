@@ -15,8 +15,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles=DB::table('roles')->select('*')->get();
+        $roles=DB::table('roles')->select('*')->where('status',1)->get();
         return view('pages.admin.table.role.index',['roles'=>$roles]);
+    }
+
+    public function trash(){
+        $roles=DB::table('roles')->select('*')->where('status',0)->get();
+        return view('pages.admin.table.role.trash',['roles'=>$roles]);
     }
 
     /**
@@ -93,6 +98,11 @@ class RoleController extends Controller
     public function restore($id){
         $roles=Role::where('id_role',$id);
         $roles->update(['status'=>1]);
-        return redirect()->route('role.index')->with('success','Data Berhasil Di Restore');
+        return redirect()->route('role.trash')->with('success','Data Berhasil Di Restore');
+    }
+
+    public function restoreall(){
+        Role::where('status', 0)->update(['status' => 1]);
+        return redirect()->route('role.trash')->with('success','Data Berhasil Di Restore Semua');
     }
 }
