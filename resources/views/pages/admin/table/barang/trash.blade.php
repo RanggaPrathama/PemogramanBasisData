@@ -7,13 +7,13 @@
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Table Role</h1>
+                <h1>Table Barang</h1>
 
                 <nav>
                     <ol class='breadcrumb'>
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Role Table</li>
+                        <li class="breadcrumb-item active">Barang Table</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -43,60 +43,61 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Trash Table Role</h3>
+                                <h3 class="card-title">TRASH Table Barang</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('role.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Role
+                                <a href="{{ route('barang.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Barang
                                 </button></a>
 
-                                @if(count($roles))
-                                <form action="{{ route('role.restoreall') }}"
-                                    method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
-                                    class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
-                                </form>
+                                @if(count($barangs))
+                                <form action="{{ route('barang.restoreall') }}"
+                                method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
+                                class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
+                            </form>
                                 @endif
-
-
-
 
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
                                         <tr>
-                                            <th scope="col">id Role</th>
-                                            <th scope="col">Nama Role</th>
+                                            <th scope="col">Id Barang</th>
+                                            <th scope="col">Id Satuan</th>
+                                            <th scope="col">Nama Satuan</th>
+                                            <th scope="col">Nama Barang</th>
+                                            <th scope="col">jenis Barang</th>
+                                            <th scope="col">Harga Barang</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($roles as $role)
+                                        @foreach ($barangs as $barang)
                                             <tr>
-                                                <th scope="row">{{ $role->id_role }}</th>
-                                                <td>{{ $role->nama_role }}</td>
-
+                                                <th scope="row">{{ $barang->id_barang}}</th>
+                                                <td>{{ $barang->id_satuan }}</td>
+                                                <td>{{ $barang->nama_satuan }}</td>
+                                                <td>{{ $barang->nama_barang }}</td>
+                                                <td>{{ $barang->jenis }}</td>
+                                                <td>{{ $barang->harga }}</td>
                                                 <td>
-                                                    @if($role->status == 0)
-                                                    <h6>Tidak Aktif</h6>
-
-
+                                                    @if($barang->status == 0)
+                                                    <h6>Tidak Aktif</h6></h6>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($role->status == 0)
-
-                                                                <form action="{{ route('role.restore',$role->id_role) }}"
-                                                                    method="POST" style="display: inline-block;">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
-                                                                    class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
-                                                                </form>
-                                                                @endif
+                                                    @if($barang->status == 0)
+                                                    <form action="{{ route('barang.restore',$barang->id_barang) }}"
+                                                        method="POST" style="display: inline-block;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
+                                                        class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
+                                                    </form>
+                                                    @endif
 
                                                 </td>
 
@@ -117,7 +118,7 @@
 
         </main><!-- End #main -->
 
-            <!-- jQuery -->
+               <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -134,7 +135,6 @@
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
 
 <script>
     $(function () {

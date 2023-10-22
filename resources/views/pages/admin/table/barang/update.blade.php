@@ -23,15 +23,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Tambah Data Barang </h5>
+                      <h5 class="card-title">Update Data Barang </h5>
 
                       <!-- Vertical Form -->
-                      <form class="row g-3" action="{{ route('barang.update',$barangs->id_barang) }}" enctype="multipart/form-data" method="POST">
+                      <form class="row g-3" action="{{ route('barang.update',$barangs[0]->id_barang) }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="col-12">
                           <label  class="form-label">Nama Barang</label>
-                          <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"  name="nama_barang" value="{{ old('nama_barang',$barangs->nama_barang) }}">
+                          <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"  name="nama_barang" value="{{ old('nama_barang',$barangs[0]->nama_barang) }}">
                           @error('nama_barang')
                             <div class='invalid-feedback'>{{ $message }}</div>
                           @enderror
@@ -40,7 +40,7 @@
                         <div class="col-12">
                             <label for="inputNanme4" class="form-label">Pilih Satuan</label>
                             @php
-                                $satuan1 = old('id_satuan',$barangs->id_satuan);
+                                $satuan1 = old('id_satuan',$barangs[0]->id_satuan);
                             @endphp
                            <select name="id_satuan" id="id_satuan" class="form-select @error('id_satuan') is-invalid @enderror">
                             <option selected>Silahkan Pilih Satuan</option>
@@ -55,7 +55,7 @@
 
                           <div class="col-12">
                             <label for="inputNanme4" class="form-label">Jenis Barang</label>
-                            <input type="text" class="form-control @error('jenis') is-invalid @enderror"  name="jenis" value="{{ old('jenis',$barangs->jenis) }}">
+                            <input type="text" class="form-control @error('jenis') is-invalid @enderror"  name="jenis" value="{{ old('jenis',$barangs[0]->jenis) }}">
                             @error('jenis')
                               <div class='invalid-feedback'>{{ $message }}</div>
                             @enderror
@@ -63,7 +63,7 @@
 
                           <div class="col-12">
                             <label for="inputNanme4" class="form-label">Harga</label>
-                            <input type="text" class="form-control @error('harga') is-invalid @enderror"  name="harga" value="{{ old('harga',$barangs->harga) }}">
+                            <input type="text" class="form-control @error('harga') is-invalid @enderror"  name="harga" value="{{ old('harga',$barangs[0]->harga) }}">
                             @error('harga')
                               <div class='invalid-feedback'>{{ $message }}</div>
                             @enderror

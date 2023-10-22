@@ -21,15 +21,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Tambah Data Vendor </h5>
+                      <h5 class="card-title">Update Data Vendor </h5>
 
                       <!-- Vertical Form -->
-                      <form class="row g-3" action="{{ route('vendor.update',$vendors->id_vendor) }}" enctype="multipart/form-data" method="POST">
+                      <form class="row g-3" action="{{ route('vendor.update',$vendors[0]->id_vendor) }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="col-12">
                           <label for="inputNanme4" class="form-label">Nama Vendor</label>
-                          <input type="text" class="form-control @error('nama_vendor') is-invalid @enderror"  name="nama_vendor" value="{{ old('nama_vendor',$vendors->nama_vendor) }}">
+                          <input type="text" class="form-control @error('nama_vendor') is-invalid @enderror"  name="nama_vendor" value="{{ old('nama_vendor',$vendors[0]->nama_vendor) }}">
                           @error('nama_vendor')
                             <div class='invalid-feedback'>{{ $message }}</div>
                           @enderror
@@ -37,7 +37,7 @@
 
                         <div class="col-12">
                             <label for="inputNanme4" class="form-label">Badan Hukum</label>
-                            <input type="text" class="form-control @error('badan_hukum') is-invalid @enderror"  name="badan_hukum" value="{{ old('badan_hukum',$vendors->badan_hukum) }}">
+                            <input type="text" class="form-control @error('badan_hukum') is-invalid @enderror"  name="badan_hukum" value="{{ old('badan_hukum',$vendors[0]->badan_hukum) }}">
                             @error('badan_hukum')
                               <div class='invalid-feedback'>{{ $message }}</div>
                             @enderror

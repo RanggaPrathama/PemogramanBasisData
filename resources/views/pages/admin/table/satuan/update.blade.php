@@ -22,15 +22,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Tambah Data Satuan </h5>
+                      <h5 class="card-title">Update Data Satuan </h5>
 
                       <!-- Vertical Form -->
-                      <form class="row g-3" action="{{ route('satuan.update',$satuans->id_satuan) }}" enctype="multipart/form-data" method="POST">
+                      <form class="row g-3" action="{{ route('satuan.update',$satuans[0]->id_satuan) }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="col-12">
                           <label for="inputNanme4" class="form-label">Nama Satuan</label>
-                          <input type="text" class="form-control @error('nama_role') is-invalid @enderror"  name="nama_satuan" value="{{ old('nama_satuan',$satuans->nama_satuan) }}">
+                          <input type="text" class="form-control @error('nama_role') is-invalid @enderror"  name="nama_satuan" value="{{ old('nama_satuan',$satuans[0]->nama_satuan) }}">
                           @error('nama_satuan')
                             <div class='invalid-feedback'>{{ $message }}</div>
                           @enderror

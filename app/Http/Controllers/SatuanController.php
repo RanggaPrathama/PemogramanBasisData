@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Satuan;
 use App\Http\Requests\StoreSatuanRequest;
 use App\Http\Requests\UpdateSatuanRequest;
+use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
+
 
 class SatuanController extends Controller
 {
@@ -15,16 +18,30 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        $satuans = DB::table('satuans')
-                    ->select('id_satuan','nama_satuan','status')
-                    ->where('status',1)
-                    ->get();
+        //QUERY BUILDER
+        // $satuans = DB::table('satuan')
+        //             ->select('id_satuan','nama_satuan','status')
+        //             ->where('status',1)
+        //             ->get();
+
+        //QUERY SQL NATIVE
+        $query = 'SELECT * FROM satuan WHERE status = ?';
+        $values = [1];
+        $satuans = DB::select($query,$values);
         return view('pages.admin.table.satuan.index',['satuans'=>$satuans]);
     }
 
     public function trash(){
-        $satuans=DB::table('satuans')->select('id_satuan','nama_satuan','status')->where('status',0)->get();
-        return view('pages.admin.table.satuan.trash',['satuans'=>$satuans]);
+        //QUERY BUILDER
+        // $satuans=DB::table('satuan')->select('id_satuan','nama_satuan','status')->where('status',0)->get();
+
+
+        //QUERY SQL NATIVE
+        $query = 'SELECT * FROM satuan WHERE status = ?';
+        $values = [0];
+        $satuans = DB::select($query,$values);
+         return view('pages.admin.table.satuan.trash',['satuans'=>$satuans]);
+
     }
 
     /**
@@ -41,14 +58,20 @@ class SatuanController extends Controller
     public function store(Request $request)
     {
         $validatedData= $request->validate([
-            'nama_satuan'=>'required|unique:satuans,nama_satuan'
+            'nama_satuan'=>'required|unique:satuan,nama_satuan'
         ],
         [
             'nama_satuan.required'=>'Nama Satuan Sudah Ada'
         ]);
 
-        $data = Satuan::create($validatedData);
-        if($data){
+        // QUERY BUILDER
+        // $data = DB::table('satuan')->insert($validatedData);
+
+        //QUERY SQL NATIVE
+        $query = 'INSERT INTO satuan (nama_satuan) VALUE (?)';
+        $values = [$validatedData['nama_satuan']];
+        $sql = DB::insert($query,$values);
+        if($sql){
             return redirect()->route('satuan.index')->with('success','Berhasil !');
         }
         else{
@@ -69,10 +92,16 @@ class SatuanController extends Controller
      */
     public function edit($id)
     {
-        $satuans=DB::table('satuans')
-                    ->select('*')
-                    ->where('id_satuan',$id)
-                    ->first();
+        //QUERY BUILDER
+        // $satuans=DB::table('satuans')
+        //             ->select('*')
+        //             ->where('id_satuan',$id)
+        //             ->first();
+
+        //QUERY SQL NATIVE
+        $query = 'SELECT * FROM satuan where id_satuan = ?';
+        $kondisi = [$id];
+        $satuans = DB::select($query,$kondisi);
         return view('pages.admin.table.satuan.update',['satuans'=>$satuans]);
     }
 
@@ -82,15 +111,21 @@ class SatuanController extends Controller
     public function update(Request $request,$id)
     {
         $validatedData= $request->validate([
-            'nama_satuan'=>'required|unique:satuans,nama_satuan'
+            'nama_satuan'=>'required|unique:satuan,nama_satuan'
         ],
         [
             'nama_satuan.required'=>'Nama Satuan Sudah Ada'
         ]);
 
-        $satuans = Satuan::where('id_satuan',$id);
-       $valid= $satuans->update($validatedData);
-        if($valid){
+        //QUERY BUILDER
+    //     $satuans = DB::table('satuan')->where('id_satuan',$id);
+    //    $valid= $satuans->update($validatedData);
+
+        //QUERY SQL NATIVE
+        $query = 'UPDATE satuan SET nama_satuan=? WHERE id_satuan = ?';
+        $values = [$validatedData['nama_satuan'],$id];
+        $sql = DB::update($query,$values);
+        if($sql){
             return redirect()->route('satuan.index')->with('success','Berhasil !');
         }
         else{
@@ -103,22 +138,111 @@ class SatuanController extends Controller
      */
     public function destroy($id)
     {
-        $satuans = Satuan::where('id_satuan',$id);
-       $valid= $satuans->update(['status'=>0]);
-       if($valid){
-        return redirect()->route('satuan.index')->with('success','Berhasil Terhapus');
-       }
+
+        //QUERY BUILDER SUB JOIN
+//      DB::transaction(function () use ($id) {
+
+//         DB::table('satuan')
+//             ->whereIn('id_satuan', function ($query) use ($id) {
+//                 $query->select('id_satuan')
+//                     ->from('satuans')
+//                     ->where('id_satuan', $id);
+//             })
+//             ->update(['status' => 0]);
+
+
+//        DB::table('barang')
+//             ->whereIn('id_satuan', function ($query) use ($id) {
+//                 $query->select('id_satuan')
+//                     ->from('satuans')
+//                     ->where('id_satuan', $id);
+//             })
+//             ->update(['status' => 0]);
+//     }
+// );
+
+    //Query builder biasa
+    //  DB::table('satuan')->where('id_satuan',$id)->update(['status'=>0]);
+
+    
+    //QUERY SQL NATIVE
+    $query = 'UPDATE satuan SET status = ? WHERE id_satuan = ?';
+    $value = [0,$id];
+    $sql = DB::update($query,$value);
+
+    // $query = 'UPDATE barang SET status = ? WHERE id_satuan = (SELECT * FROM satuan WHERE id_satuan = ?)';
+    // $values = [0,$id];
+    // $sql = DB::update($query,$values);
+
+    if($sql){
+
+        return redirect()->route('satuan.index')->with('success', 'Berhasil Terhapus');
+    }
     }
 
+
     public function restore($id){
-        $vendors = Satuan::where('id_satuan',$id);
-        $valid= $vendors->update(['status'=>1]);
-        if($valid){
+
+        //QUERY BUILDER SUB QUEERY
+        // DB::transaction(function () use ($id) {
+
+        //     DB::table('satuans')
+        //         ->whereIn('id_satuan', function ($query) use ($id) {
+        //             $query->select('id_satuan')
+        //                 ->from('satuans')
+        //                 ->where('id_satuan', $id);
+        //         })
+        //         ->update(['status' => 1]);
+
+
+        //    DB::table('barangs')
+        //         ->whereIn('id_satuan', function ($query) use ($id) {
+        //             $query->select('id_satuan')
+        //                 ->from('satuans')
+        //                 ->where('id_satuan', $id);
+        //         })
+        //         ->update(['status' => 1]);
+        // });
+
+        //QUERY SQL NATIVE
+        $query = 'UPDATE satuan SET status = ? WHERE id_satuan =?';
+        $values = [1,$id];
+        $sql = DB::update($query,$values);
+
+        if($sql){
             return redirect()->route('satuan.trash')->with('success','Berhasil di Restore !');
-    }
+        }
 }
 public function restoreall(){
-    Satuan::where('status', 0)->update(['status' => 1]);
-    return redirect()->route('satuan.trash')->with('success','Data Berhasil Di Restore Semua');
+
+    //QUERY BUILDER SUB JOIN
+    // DB::transaction(function ()  {
+
+    //     DB::table('satuans')
+    //         ->whereIn('id_satuan', function ($query)  {
+    //             $query->select('id_satuan')
+    //                 ->from('satuans');
+
+    //         })
+    //         ->update(['status' => 1]);
+
+
+    //    DB::table('barangs')
+    //         ->whereIn('id_satuan', function ($query) {
+    //             $query->select('id_satuan')
+    //                 ->from('satuans');
+
+    //         })
+    //         ->update(['status' => 1]);
+    // });
+
+    //QUERY SQL NATIVE
+
+    $query=('UPDATE satuan SET status=? WHERE status = ?');
+    $values=[1,0];
+    $sql = DB::update($query,$values);
+    if($sql){
+    return redirect()->route('satuan.trash')->with('success','Semua Data Berhasil Di Restore');
+    }
 }
 }

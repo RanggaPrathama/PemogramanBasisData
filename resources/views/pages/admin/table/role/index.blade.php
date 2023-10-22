@@ -73,7 +73,7 @@
                                                     @if($role->status == 1)
                                                     <h6>Aktif</h6>
 
-                                                  
+
                                                     @endif
                                                 </td>
                                                 <td>
@@ -167,8 +167,7 @@
   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
 
-  </script>
-
+</script>
 
     </body>
 @endsection

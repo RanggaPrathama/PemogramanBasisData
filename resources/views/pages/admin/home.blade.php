@@ -1,12 +1,22 @@
     @extends('layouts.appAdmin')
 
+
+
     @section('content')
 
   <main id="main" class="main">
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show col-md-12" id="success-alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
+@endif
     <div class="pagetitle">
       <h1>Dashboard</h1>
-      <nav>
+         <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
@@ -654,4 +664,8 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+ <!-- JQUERY -->
+ <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+ <!-- Bootstrap 4 -->
+ <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 @endsection

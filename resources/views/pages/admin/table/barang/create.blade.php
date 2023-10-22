@@ -1,6 +1,6 @@
 @extends('layouts.appAdmin')
 
-@section('form')
+@section('content')
 
 <main id="main" class="main">
 

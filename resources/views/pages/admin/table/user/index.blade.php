@@ -7,13 +7,13 @@
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Table Role</h1>
+                <h1>Table User</h1>
 
                 <nav>
                     <ol class='breadcrumb'>
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Role Table</li>
+                        <li class="breadcrumb-item active">User Table</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -43,59 +43,67 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Trash Table Role</h3>
+                                <h3 class="card-title">CRUD Table User</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('role.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Role
+                                <a href="{{ route('user.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
                                 </button></a>
-
-                                @if(count($roles))
-                                <form action="{{ route('role.restoreall') }}"
-                                    method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
-                                    class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
-                                </form>
-                                @endif
-
-
-
-
+                                <a href="{{ route('user.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
+                                </button></a>
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
                                         <tr>
-                                            <th scope="col">id Role</th>
+                                            <th scope="col">Id User</th>
+                                            <th scope="col">Id Role</th>
                                             <th scope="col">Nama Role</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Password</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($roles as $role)
+                                       @foreach ($users as $user )
+
+
                                             <tr>
-                                                <th scope="row">{{ $role->id_role }}</th>
-                                                <td>{{ $role->nama_role }}</td>
-
+                                                <th scope="row">{{ $user->id_user}}</th>
+                                                <td>{{ $user->id_role }}</td>
+                                                <td>{{ $user->nama_role }}</td>
+                                                <td>{{ $user->username }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->password }}</td>
                                                 <td>
-                                                    @if($role->status == 0)
-                                                    <h6>Tidak Aktif</h6>
+                                                    @if($user->status == 1)
 
-
+                                                    <h6>Aktif</h6>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($role->status == 0)
+                                                    @if($user->status == 1)
+                                                    <a href="{{ route('user.edit',$user->id_user) }}"> <button class="btn btn-success"><i
+                                                                class="bi bi-pencil-square"></i></button></a>
 
-                                                                <form action="{{ route('role.restore',$role->id_role) }}"
+                                                                <form action="{{ route('user.destroy', $user->id_user) }}"
+                                                                    method="POST" style="display: inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" onclick="return confirm('Apakah anda yakin ingin menghapus data ?')"
+                                                                    class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
+
+
+                                                                </form>
+                                                                @else
+                                                                <form action="{{ route('user.restore',$user->id_user) }}"
                                                                     method="POST" style="display: inline-block;">
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data ?')"
                                                                     class="btn btn-success"><i class="bi bi-arrow-clockwise"></i></button>
-                                                                </form>
+
                                                                 @endif
 
                                                 </td>
@@ -117,7 +125,7 @@
 
         </main><!-- End #main -->
 
-            <!-- jQuery -->
+               <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -134,7 +142,6 @@
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
 
 <script>
     $(function () {

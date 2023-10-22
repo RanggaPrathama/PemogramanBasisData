@@ -49,7 +49,8 @@
                             <div class="card-body">
                                 <a href="{{ route('barang.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Tambah Data
                                 </button></a>
-
+                                <a href="{{ route('barang.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
+                                </button></a>
                                 <table id="example1" class="table table-bordered table-striped">
 
                                     <thead>
@@ -74,10 +75,8 @@
                                                 <td>{{ $barang->jenis }}</td>
                                                 <td>{{ $barang->harga }}</td>
                                                 <td>
-                                                    @if($barang->status == 0)
-                                                    <h6>Tidak Aktif</h6></h6>
+                                                    @if($barang->status == 1)
 
-                                                    @else
                                                     <h6>Aktif</h6>
                                                     @endif
                                                 </td>

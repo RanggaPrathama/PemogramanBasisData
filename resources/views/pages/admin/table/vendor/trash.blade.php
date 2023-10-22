@@ -50,6 +50,7 @@
                                 <a href="{{ route('vendor.index') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> <i class="bi bi-arrow-bar-left"></i> Data Vendor
                                 </button></a>
 
+                                @if(count($vendors))
                                 <form action="{{ route('vendor.restoreall') }}"
                                 method="POST" style="display: inline-block;">
                                 @csrf
@@ -57,6 +58,7 @@
                                 <button type="submit" onclick="return confirm('Apakah anda ingin memulihkan data semua ?')"
                                 class="btn btn-success">Pulihkan Semua <i class="bi bi-arrow-clockwise"></i></button>
                             </form>
+                            @endif
 
 
                                 <table id="example1" class="table table-bordered table-striped">
