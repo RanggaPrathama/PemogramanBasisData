@@ -95,3 +95,9 @@ Route::put('/barang/restore/{id}',[BarangController::class,'restore'])->name('ba
 Route::get('/barang/trash',[BarangController::class,'trash'])->name('barang.trash');
 Route::put('/barang/restoreall',[BarangController::class,'restoreall'])->name('barang.restoreall');
 
+
+Route::get('/coba',function(){
+    return view('pages.admin.table.coba.form');
+});
+
+Route::post('/caribarang',[BarangController::class,'caribarang']);

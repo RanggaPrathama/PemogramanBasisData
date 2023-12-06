@@ -16,7 +16,7 @@ class RegisterController extends Controller
 
         $validatedData = $request->validate([
             'username'=>'required|string',
-            'email'=>'required|unique:users,email',
+            'email'=>'required|unique:user,email',
             'password'=>'required|confirmed',
 
         ],
@@ -28,17 +28,25 @@ class RegisterController extends Controller
         'password.confirmed'=>'Password Tidak Sama !'
     ]);
 
-        $role = DB::table('roles')->select('id_role')->where('nama_role','admin')->first();
+        // $role = DB::table('role')->select('id_role')->where('nama_role','admin')->first();
+
+        $query = 'SELECT id_role From role WHERE nama_role LIKE ?';
+        $kondisi = ['admin'];
+        $role = DB::select($query,$kondisi);
         $data = [
-            'id_role'=> $role->id_role,
+            'id_role'=> $role[0]->id_role,
             'username'=> $request->input('username'),
             'email'=> $request->input('email'),
             'password'=>bcrypt($request->input('password')),
 
         ];
 
-       $tes= User::create($data);
-      if($tes){
+    //    $tes= DB::table('user')->insert($data);
+
+    $query =  ' INSERT INTO user(id_role,username,email,password) VALUES (?,?,?,?)';
+    $values = [$data['id_role'],$data['username'],$data['email'],$data['password']];
+    $sql = DB::insert($query,$values);
+      if($sql){
         return redirect()->route('login')->with('success','Berhasil !');
       }
 

@@ -28,14 +28,14 @@ class BarangController extends Controller
                   JOIN satuan ON satuan.id_satuan = b.id_satuan
                   WHERE b.status = ?';
         $kondisi = [1];
-        $barangs = DB::select($query,$kondisi);
+        $barangs = DB::select($query, $kondisi);
 
 
-        return view('pages.admin.table.barang.index',['barangs'=>$barangs]);
-
+        return view('pages.admin.table.barang.index', ['barangs' => $barangs]);
     }
 
-    public function trash(){
+    public function trash()
+    {
 
         //QUERY BUILDER
         // $barangs = DB::table('barang')
@@ -50,10 +50,9 @@ class BarangController extends Controller
                   JOIN satuan s ON b.id_satuan = s.id_satuan
                   WHERE b.status = ?';
         $kondisi = [0];
-        $barangs = DB::select($query,$kondisi);
+        $barangs = DB::select($query, $kondisi);
 
-            return view('pages.admin.table.barang.trash',['barangs'=>$barangs]);
-
+        return view('pages.admin.table.barang.trash', ['barangs' => $barangs]);
     }
 
     /**
@@ -69,8 +68,8 @@ class BarangController extends Controller
         //QUERY SQL NATIVE
         $query = 'SELECT * FROM satuan where status= ?';
         $kondisi = [1];
-        $satuans = DB::select($query,$kondisi);
-        return view('pages.admin.table.barang.create',['satuans'=>$satuans]);
+        $satuans = DB::select($query, $kondisi);
+        return view('pages.admin.table.barang.create', ['satuans' => $satuans]);
     }
 
     /**
@@ -78,31 +77,32 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $validateddata = $request->validate([
-            'nama_barang'=>'required|unique:barang,nama_barang',
-            'id_satuan'=>'required',
-            'jenis'=>'required',
-            'harga'=>'required|numeric'
-        ],
-        [
-            'nama_barang.required'=>'Nama Barang wajib diisi',
-            'id_satuan.required'=>'Satuan wajib diisi',
-            'jenis.required'=>'Jenis Wajib diisi',
-            'harga.required'=>'Harga Wajib diisi',
-            'harga.numeric'=>'Harga Bersifat Numeric'
-        ]);
+        $validateddata = $request->validate(
+            [
+                'nama_barang' => 'required|unique:barang,nama_barang',
+                'id_satuan' => 'required',
+                'jenis' => 'required',
+                'harga' => 'required|numeric'
+            ],
+            [
+                'nama_barang.required' => 'Nama Barang wajib diisi',
+                'id_satuan.required' => 'Satuan wajib diisi',
+                'jenis.required' => 'Jenis Wajib diisi',
+                'harga.required' => 'Harga Wajib diisi',
+                'harga.numeric' => 'Harga Bersifat Numeric'
+            ]
+        );
         //QUERY BUILDER
         // $data = DB::table('barang')->insert($validateddata);
 
         //QUERY NATIVE
         $query = 'INSERT INTO barang (nama_barang,id_satuan,jenis,harga) VALUES (?,?,?,?)';
-        $values = [$validateddata['nama_barang'],$validateddata['id_satuan'],$validateddata['jenis'],$validateddata['harga']];
-        $sql = DB::insert($query,$values);
-        if($sql){
-            return redirect()->route('barang.index')->with('success','Berhasil !');
-        }
-        else{
-            return redirect()->back()->with('errors','Gagal!')->withInput();
+        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga']];
+        $sql = DB::insert($query, $values);
+        if ($sql) {
+            return redirect()->route('barang.index')->with('success', 'Berhasil !');
+        } else {
+            return redirect()->back()->with('errors', 'Gagal!')->withInput();
         }
     }
 
@@ -131,32 +131,34 @@ class BarangController extends Controller
         //QUERY NATIVE
         $query = 'SELECT * FROM barang WHERE id_barang= ? ';
         $kondisi = [$id];
-        $barangs = DB::select($query,$kondisi);
+        $barangs = DB::select($query, $kondisi);
 
         $query = 'SELECT * FROM satuan where status = ?';
         $kondisi = [1];
-        $satuans = DB::select($query,$kondisi);
-        return view('pages.admin.table.barang.update',['barangs'=>$barangs,'satuans'=>$satuans]);
+        $satuans = DB::select($query, $kondisi);
+        return view('pages.admin.table.barang.update', ['barangs' => $barangs, 'satuans' => $satuans]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $validateddata = $request->validate([
-            'nama_barang'=>'required',
-            'id_satuan'=>'required',
-            'jenis'=>'required',
-            'harga'=>'required|numeric'
-        ],
-        [
-            'nama_barang.required'=>'Nama Barang wajib diisi',
-            'id_satuan.required'=>'Satuan wajib diisi',
-            'jenis.required'=>'Jenis Wajib diisi',
-            'harga.required'=>'Harga Wajib diisi',
-            'harga.numeric'=>'Harga Bersifat Numeric'
-        ]);
+        $validateddata = $request->validate(
+            [
+                'nama_barang' => 'required',
+                'id_satuan' => 'required',
+                'jenis' => 'required',
+                'harga' => 'required|numeric'
+            ],
+            [
+                'nama_barang.required' => 'Nama Barang wajib diisi',
+                'id_satuan.required' => 'Satuan wajib diisi',
+                'jenis.required' => 'Jenis Wajib diisi',
+                'harga.required' => 'Harga Wajib diisi',
+                'harga.numeric' => 'Harga Bersifat Numeric'
+            ]
+        );
 
         //QUERY BUILDER
         // $barangs = DB::table('barang')->where('id_barang',$id);
@@ -164,10 +166,10 @@ class BarangController extends Controller
 
         //QUERY NATIVE
         $query = 'UPDATE barang SET nama_barang = ?, id_satuan = ?, jenis= ? , harga = ? WHERE id_barang = ?';
-        $values = [$validateddata['nama_barang'],$validateddata['id_satuan'],$validateddata['jenis'],$validateddata['harga'],$id];
-        $sql = DB::update($query,$values);
-        if($sql){
-            return redirect()->route('barang.index')->with('success','Berhasil!');
+        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga'], $id];
+        $sql = DB::update($query, $values);
+        if ($sql) {
+            return redirect()->route('barang.index')->with('success', 'Berhasil!');
         }
     }
 
@@ -182,10 +184,10 @@ class BarangController extends Controller
 
         //QUERY NATIVE SQL
         $query = 'UPDATE barang SET status=? WHERE id_barang = ?';
-        $values = [0,$id];
-        $sql = DB::update($query,$values);
-        if($sql){
-            return redirect()->route('barang.index')->with('success','Data Berhasil Terhapus !');
+        $values = [0, $id];
+        $sql = DB::update($query, $values);
+        if ($sql) {
+            return redirect()->route('barang.index')->with('success', 'Data Berhasil Terhapus !');
         }
     }
     public function restore($id)
@@ -196,26 +198,38 @@ class BarangController extends Controller
 
         //QUERY SQL NATIVE
         $query = 'UPDATE barang SET status = ? WHERE id_barang = ?';
-        $values = [1,$id];
-        $sql = DB::update($query,$values);
-        if($sql){
-            return redirect()->route('barang.trash')->with('success','Data Berhasil Terestore  !');
+        $values = [1, $id];
+        $sql = DB::update($query, $values);
+        if ($sql) {
+            return redirect()->route('barang.trash')->with('success', 'Data Berhasil Terestore  !');
         }
     }
 
-    public function restoreall(){
+    public function restoreall()
+    {
         // QUERY BUILDER
         // $barangs = DB::table('barang')->where('status',0)->update(['status'=>1]);
 
         //QUERY SQL NATIVE
 
         $query = 'UPDATE barang SET status =? WHERE status = ?';
-        $values = [1,0];
-        $sql = DB::update($query,$values);
+        $values = [1, 0];
+        $sql = DB::update($query, $values);
 
-        if($sql){
-            return redirect()->route('barang.trash')->with('success','Semua Data Berhasil Di Restore');
+        if ($sql) {
+            return redirect()->route('barang.trash')->with('success', 'Semua Data Berhasil Di Restore');
         }
+    }
 
+    public function caribarang(Request $request)
+    {
+        //print_r($request->all());
+        $brg = $request->barang;
+
+        $barang = DB::table('barang')
+            ->whereRaw("upper(nama_barang) LIKE upper('%$brg%')")
+            ->get()
+            ->toArray();
+        return response()->json($barang);
     }
 }

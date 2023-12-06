@@ -45,7 +45,15 @@
               <i class="bi bi-circle"></i><span>Barang Table</span>
             </a>
           </li>
+
+
         </ul>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('register') ? 'active' : 'collapsed'  }}" href="{{ route('register') }}">
+              <i class="bi bi-box-arrow-in-right"></i>
+              <span>Register</span>
+            </a>
+          </li><!-- End Login Page Nav -->
       </li><!-- End Tables Nav -->
 
     </ul>

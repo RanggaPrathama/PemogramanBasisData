@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -23,14 +25,37 @@ class LoginController extends Controller
             'password'=>$request->input('password'),
         ];
 
-        if(Auth::attempt($infoLogin)){
-            $request->session()->regenerate();
-            return redirect()->route('admin.home')->with('success','Selamat Datang ADMIN !');
-        }
-        else{
-            return redirect()->back()->with('errors','Gagal !')->withInput();
-        }
+        // if(Auth::attempt($infoLogin)){
+        //     $request->session()->regenerate();
+        //     return redirect()->route('admin.home')->with('success','Selamat Datang ADMIN !');
+        // }
+        // else{
+        //     return redirect()->back()->with('errors','Gagal !')->withInput();
+        // }
+
+    // $validUser = DB::table('user')
+    // ->where('email', $infoLogin['email'])
+    // ->first();
+
+    $query = 'SELECT * from user where email = ?';
+    $kondisi = [$infoLogin['email']];
+    $validUser = DB::select($query,$kondisi);
+
+    if ($validUser && Hash::check($infoLogin['password'], $validUser[0]->password)) {
+        Auth::loginUsingId($validUser[0]->id_user); // Autentikasi pengguna
+        $request->session()->regenerate();
+        return redirect()->route('admin.home')->with('success', 'Selamat Datang ADMIN!');
+    } else {
+        return redirect()->back()->with('errors', 'Gagal!')->withInput();
     }
+
+
+
+
+
+
+
+}
 
     public function logout(Request $request){
         Auth::logout();
