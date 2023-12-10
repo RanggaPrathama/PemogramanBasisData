@@ -46,6 +46,12 @@
             </a>
           </li>
 
+          <li>
+            <a class= "nav-link {{ request()->is('pengadaan*') ? 'active' : '' }}" href="{{ route('pengadaan.index') }}">
+              <i class="bi bi-circle"></i><span>Pengadaan Table</span>
+            </a>
+          </li>
+
 
         </ul>
         <li class="nav-item">

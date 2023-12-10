@@ -41,7 +41,7 @@
                                     <input id="inputbarang" class="form-control" type="text" name="barang">
                                     <span id="pesan"> </span>
                                 </div>
-
+                                    
                                 <div class="col-4">
                                     <label for="" class="form-control">harga satuan</label>
                                     <input class="form-control" type="text" name="harga_satuan" readonly>
@@ -76,7 +76,35 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            ...
+                                            <table class="table"  id="tableproduk">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">idbarang</th>
+                                                    <th scope="col">idsatuan</th>
+                                                    <th scope="col">nama_barang</th>
+                                                    <th scope="col">aksi</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  {{-- <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <th scope="row">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <th scope="row">3</th>
+                                                    <td colspan="2">Larry the Bird</td>
+                                                    <td>@twitter</td>
+                                                  </tr> --}}
+                                                </tbody>
+                                              </table>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -111,7 +139,42 @@
                 success: function(data) {
                     // mydat = JSON.parse(data);
                     console.log(data);
+
+                    if(data.length > 0){
+
+                    for(let i=0; i<data.length; i++){
+                      let row = `<tr>
+
+                            <td>
+                                ${data[i].id_barang}
+                                    </td>
+                            <td>
+                                ${data[i].id_satuan}
+                                </td>
+
+                            <td>
+                                ${data[i].nama_barang}
+                                </td>
+
+
+                            </tr>`;
+
+                        $('#tableproduk tbody').append(row);
+                    };
+
+
+
+
+
                     $('#exampleModal').modal('show');
+                }
+
+
+                else{
+                    alert('data tidak ada');
+                }
+
+
                 },
                 error: function() {
                     console.log('Error in AJAX request');

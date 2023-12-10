@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminHomeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
@@ -100,4 +101,9 @@ Route::get('/coba',function(){
     return view('pages.admin.table.coba.form');
 });
 
-Route::post('/caribarang',[BarangController::class,'caribarang']);
+
+//Proses Pengadaan
+
+Route::get('/Pengadaan',[PengadaanController::class,'index'])->name('pengadaan.index');
+Route::get('/Pengadaan/create',[PengadaanController::class,'create'])->name('pengadaan.create');
+Route::post('/caribarang',[PengadaanController::class,'caribarang']);

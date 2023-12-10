@@ -221,15 +221,5 @@ class BarangController extends Controller
         }
     }
 
-    public function caribarang(Request $request)
-    {
-        //print_r($request->all());
-        $brg = $request->barang;
-
-        $barang = DB::table('barang')
-            ->whereRaw("upper(nama_barang) LIKE upper('%$brg%')")
-            ->get()
-            ->toArray();
-        return response()->json($barang);
-    }
+   
 }
