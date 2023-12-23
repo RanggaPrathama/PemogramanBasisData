@@ -52,6 +52,12 @@
             </a>
           </li>
 
+          <li>
+            <a class= "nav-link {{ request()->is('penerimaan*') ? 'active' : '' }}" href="{{ route('penerimaan.index') }}">
+              <i class="bi bi-circle"></i><span>Penerimaan Table</span>
+            </a>
+          </li>
+
 
         </ul>
         <li class="nav-item">

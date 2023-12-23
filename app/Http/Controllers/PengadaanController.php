@@ -11,12 +11,23 @@ class PengadaanController extends Controller
 
 
         public function index(){
-            $pengadaans = DB::table('pengadaan')->select('*')->get();
+            $pengadaans = DB::table('pengadaan as p')->select('p.*','v.nama_vendor','u.username')
+                        ->join('vendor as v','v.id_vendor','=','p.id_vendor')
+                        ->join('user as u','u.id_user','=','p.id_user')
+                        ->get();
             return view('pages.admin.table.pengadaan.index',['pengadaans'=>$pengadaans]);
         }
 
         public function detail($id){
-            
+            $detailPengadaans = DB::table('detail_pengadaan as d')
+                                ->select('d.*','b.nama_barang')
+                                ->join('barang as b','b.id_barang','=','d.id_barang')
+                                ->where('d.id_pengadaan','=',$id)
+                                ->get();
+
+
+
+            return response()->json($detailPengadaans);
         }
 
         public function create(){

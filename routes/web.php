@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminHomeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleController;
@@ -97,14 +98,16 @@ Route::get('/barang/trash',[BarangController::class,'trash'])->name('barang.tras
 Route::put('/barang/restoreall',[BarangController::class,'restoreall'])->name('barang.restoreall');
 
 
-Route::get('/coba',function(){
-    return view('pages.admin.table.coba.form');
-});
 
+//TABLE Pengadaan
 
-//Proses Pengadaan
-
-Route::get('/Pengadaan',[PengadaanController::class,'index'])->name('pengadaan.index');
+Route::get('/pengadaan',[PengadaanController::class,'index'])->name('pengadaan.index');
+Route::get('/pengadaan/detail/{id}',[PengadaanController::class,'detail'])->name('pengadaan.detail');
 Route::get('/pengadaan/create',[PengadaanController::class,'create'])->name('pengadaan.create');
 Route::post('/caribarang',[PengadaanController::class,'caribarang']);
 Route::post('/pengadaan/store',[PengadaanController::class,'store'])->name('pengadaan.store');
+
+// TABLE PENERIMAAN
+Route::get('/penerimaan',[PenerimaanController::class,'index'])->name('penerimaan.index');
+Route::get('/penerimaan/create',[PenerimaanController::class,'create'])->name('penerimaan.create');
+Route::get('/penerimaan/detailPengadaan/{id}',[PenerimaanController::class,'detailPengadaan']);
