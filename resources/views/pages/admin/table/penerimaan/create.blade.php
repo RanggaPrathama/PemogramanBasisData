@@ -37,9 +37,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-6">
-                                        <button id="pilihPengadaan" class="btn btn-success">Pilih</button>
-                                    </div>
+                                   
                                 </div>
 
 
@@ -106,7 +104,7 @@
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="closeModal()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" onclick="displayDetail()" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -126,6 +124,9 @@
             $('#id_pengadaan').change(function() {
                 let idPengadaan = parseInt($(this).val());
                 console.log(idPengadaan);
+
+                dataPenerimaan = [];
+                $('#tableDetail tbody').empty();
 
                 $.ajax({
                     type: "GET",
@@ -163,9 +164,9 @@
 
             for (let i = 0; i < data.length; i++) {
                 dataPenerimaan.push({
-                    iddetail_pengadaan:data[i].iddetail_pengadaan,
+                    iddetail_pengadaan: data[i].iddetail_pengadaan,
                     id_barang: data[i].id_barang,
-                    nama_barang:data[i].nama_barang,
+                    nama_barang: data[i].nama_barang,
                     jumlah_terima: data[i].jumlah,
                     harga_satuan_terima: data[i].harga_satuan,
                     sub_total_terima: data[i].sub_total
@@ -175,6 +176,11 @@
             console.log(dataPenerimaan);
 
         };
+
+        function closeModal(){
+            dataPenerimaan = [];
+            console.log(dataPenerimaan);
+        }
 
         function hapusData(idDetail) {
 
@@ -213,19 +219,33 @@
                                             <td>${detail.iddetail_pengadaan}</td>
                                             <td>${detail.nama_barang}</td>
                                             <td>${detail.harga_satuan_terima}</td>
-                                            <input type='hidden' id='harga-${detail.iddetail_pengadaan}' value=${detail.harga_satuan_terima} >
-                                            <td><input type='number' id='jumlah-${detail.iddetail_pengadaan}' onchange='updateSubTotal(${detail.iddetail_pengadaan})' value=${detail.jumlah_terima}> </td>
-                                            <td>${detail. sub_total_terima}</td>
+                                            <input type='hidden' id='harga-${detail.iddetail_pengadaan}'  value=${detail.harga_satuan_terima} >
+                                            <td><input type='number' id='jumlah-${detail.iddetail_pengadaan}' max=${detail.jumlah_terima} onchange='updateSubTotal(${detail.iddetail_pengadaan})' value=${detail.jumlah_terima}> </td>
+                                            <td id=subtotal-${detail.iddetail_pengadaan} >${detail.sub_total_terima}</td>
 
                                         </tr>`;
-                                $('#tableDetail tbody').append(row);
+                $('#tableDetail tbody').append(row);
             });
 
             $('#exampleModal').modal('hide');
         }
 
-        function updateSubTotal(){
+        function updateSubTotal(idDetail) {
+            if ($(`#jumlah-${idDetail}`).val() < 0) {
+                alert('Quantity tidak boleh minus');
+                $(`#jumlah-${idDetail}`).val(0);
+            };
 
+            let harga_satuan = parseInt($(`#harga-${idDetail}`).val());
+            let quantity = parseInt($(`#jumlah-${idDetail}`).val());
+
+            let index = dataPenerimaan.findIndex(item => item.iddetail_pengadaan === idDetail);
+            dataPenerimaan[index].jumlah_terima = quantity;
+            dataPenerimaan[index].sub_total_terima = quantity * harga_satuan;
+
+            $(`#subtotal-${idDetail}`).text(dataPenerimaan[index].sub_total_terima);
+
+            console.log(dataPenerimaan);
         }
     </script>
 @endsection
