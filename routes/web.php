@@ -105,5 +105,6 @@ Route::get('/coba',function(){
 //Proses Pengadaan
 
 Route::get('/Pengadaan',[PengadaanController::class,'index'])->name('pengadaan.index');
-Route::get('/Pengadaan/create',[PengadaanController::class,'create'])->name('pengadaan.create');
+Route::get('/pengadaan/create',[PengadaanController::class,'create'])->name('pengadaan.create');
 Route::post('/caribarang',[PengadaanController::class,'caribarang']);
+Route::post('/pengadaan/store',[PengadaanController::class,'store'])->name('pengadaan.store');

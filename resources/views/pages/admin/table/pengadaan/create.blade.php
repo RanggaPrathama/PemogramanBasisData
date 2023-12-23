@@ -24,7 +24,8 @@
                             <h5 class="card-title">Pengadaan Barang </h5>
 
                             <!-- Vertical Form -->
-                            <form class="row g-3" action="" enctype="multipart/form-data" method="POST">
+                            <form id="formPengadaan" class="row g-3" action="" enctype="multipart/form-data"
+                                method="POST">
                                 @csrf
                                 <div class="row mt-3">
                                     <div class="col-4">
@@ -37,9 +38,10 @@
 
 
                                         <select class="form-select" name="vendor" id="id_vendor">
+
+                                            <option value=0 selected> Silahkan Pilih</option>
                                             @foreach ($vendors as $vendor)
-                                                <option value="0" selected> Silahkan Pilih</option>
-                                                <option value="{{ $vendor->id_vendor }}">
+                                                <option value={{ $vendor->id_vendor }}>
                                                     {{ $vendor->nama_vendor }}
                                                 </option>
                                             @endforeach
@@ -64,9 +66,12 @@
                                     <span id="pesan"> </span>
                                 </div>
 
+
+
                                 <div class="col-3">
                                     <label for="" class="form-label ">Quantity</label>
-                                    <input class="form-control" id="quantity" type="text" name="jumlah" value="0" readonly>
+                                    <input class="form-control" id="quantity" type="text" name="jumlah" value="0"
+                                        readonly>
                                 </div>
 
                                 <div class="col-3">
@@ -89,8 +94,8 @@
                                     <button type="button" onclick="resetBarang()" class="btn btn-secondary">Reset</button>
                                 </div>
 
-
-                            </form><!-- Vertical Form -->
+                            </form>
+                            <!-- Vertical Form -->
 
                             <!--MODAL  -->
 
@@ -140,7 +145,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -153,10 +158,31 @@
                 <div class="col-md-4">
                     <div class='card'>
                         <div class="card-header">
-                            <h5 class="card-title">Invoice </h5>
+                            <h5 class="card-title">TOTAL </h5>
                         </div>
                         <div class="card-body">
 
+
+                            {{-- PPN --}}
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <h4 class="card-title">PPN :</h4>
+                                    <input type="hidden" value="0.11" id='ppn' name='ppn'>
+                                    <h4 class="card-title" style="font-size: 25px"> 11 % </h4>
+
+                                </div>
+                                <div class="col-12 bg-primary text-white text-center">
+                                    <input type="hidden" id="value_totalnilai" value=0 name="total_nilai">
+                                    <h2 id="displayTotal" style="margin: 10px 20px; font-size:25px;">Rp. 0,00</h2>
+                                    {{-- <input type="hidden" name="dataPengadaan"  id="dataPengadaan"> --}}
+
+                                </div>
+                            </div>
+
+                            {{-- PPN --}}
+
+
+                            {{-- TOTAL NILAI --}}
                         </div>
                     </div>
                 </div>
@@ -168,7 +194,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Hasil </h5>
+                            <h5 class="card-title">LIST BARANG PENGADAAN </h5>
                         </div>
                         <div class="card-body">
                             <table class="table" id="tableList">
@@ -184,6 +210,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     {{-- <tr>
                                     <th scope="row">1</th>
                                     <td>Mark</td>
@@ -202,16 +229,32 @@
                                     <td>@twitter</td>
                                   </tr> --}}
                                 </tbody>
+
                             </table>
+                            <form id="formPengadaan2" class="row g-3" action="{{ route('pengadaan.store') }}"
+                                enctype="multipart/form-data" method="POST">
+                                @csrf
+                                <input type="hidden" name="dataPengadaan" id="dataPengadaan" value="">
+                                <button type="button" id="simpan" class="btn btn-primary"> SUBMIT </button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
             </div>
+
         </section>
     </main>
 
+    {{-- <form id="form-hasil" action="">
+
+
+    </form> --}}
+
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         let barangPilih = [];
@@ -244,13 +287,13 @@
                             <td>${data[i].harga} </td>
                             <td>
                                 <button type="button" onclick="pilihBarang(${data[i].id_barang},'${data[i].nama_barang}',${data[i].harga},'${data[i].nama_satuan}')"
-                                class="btn btn-success">
+                                class="btn btn-success" ${barangPilih.some(barang => barang.id_barang == data[i].id_barang) ? 'disabled' : ''}>
 
                                 <i class="bi bi-check2-circle"></i>
                             </button>
                             </td>
                             </tr>`;
-                            // ${barangPilih.some(barang => barang.id_barang == data[i].id_barang) ? 'disabled' : ''}
+
                             $('#tableproduk tbody').append(row);
                         };
 
@@ -277,7 +320,9 @@
         // MEMILIH KATEGORI VENDOR
         $(document).ready(function() {
             $('#id_vendor').change(function() {
-                let idVendor = $(this).val();
+                let idVendor = parseInt($(this).val());
+
+                console.log(`Vendor : ${idVendor}`);
 
             })
 
@@ -285,7 +330,7 @@
         //TUTUP KATEGORI  VENDOR
 
 
-        // FUNCTION PILIH BARANG
+        // FUNCTION PILIH BARANG ( memasukkan dulu barang yang dipilih kedalam input )
         function pilihBarang(idBarang, namaBarang, hargaBarang, namaSatuan) {
 
 
@@ -294,25 +339,25 @@
             $('#inputbarang').val(namaBarang);
             $('#nama_satuan').val(namaSatuan);
             $('#harga_barang').val(hargaBarang);
-           // let idVendor =  $('#id_vendor').val('');
+            // let idVendor =  $('#id_vendor').val('');
             $('#quantity').prop('readonly', false).select();
 
 
 
             //let Item = barangPilih.find(item => item.id_barang == idBarang);
 
-          // if (Item) {
-          //      alert('Barang Sudah Dipilih');
-          //  } else {
-          //      barangPilih.push({
-          //          id_barang: idBarang,
-          //          id_vendor:idVendor,
-          //          nama_barang: namaBarang,
-          //          harga: hargaBarang,
-          //          quantity: 1, //DEFAULT BRO TAK KASIH 1
-          //          subtotal: hargaBarang,
-          //      });
-          //    };
+            // if (Item) {
+            //      alert('Barang Sudah Dipilih');
+            //  } else {
+            //      barangPilih.push({
+            //          id_barang: idBarang,
+            //          id_vendor:idVendor,
+            //          nama_barang: namaBarang,
+            //          harga: hargaBarang,
+            //          quantity: 1, //DEFAULT BRO TAK KASIH 1
+            //          subtotal: hargaBarang,
+            //      });
+            //    };
 
 
             // if (barangPilih.some(barang => barang.id_barang == idBarang)) {
@@ -333,51 +378,35 @@
 
         // FUNCTION RESET BARANG KEMUNGKINAN SALAH INPUT
         function resetBarang() {
-            let idBarangHapus = barangPilih[barangPilih.length - 1].id_barang;
-
-            // HAPUS BARANG SESUAI ID
-            barangPilih = barangPilih.filter(barang => barang.id_barang !== idBarangHapus);
-
-
-
 
             $('#inputbarang').val('');
             $('#id_barang').val('');
             $('#nama_satuan').val('');
             $('#harga_barang').val('');
             $('#quantity').val('');
-            $('#id_vendor').val('');
             $('#quantity').prop('readonly', true).val('');
 
-            console.log(barangPilih);
+
         };
 
+        // UNTUK TAMBAH LIST BARANG YANG SUDAH DI LIST SUDAH TEKAN TOMBOL TAMBAH LIST ITU
         function tambahList() {
-            let idBarang = $('#id_barang').val();
+            let idBarang = parseInt($('#id_barang').val());
             let namaBarang = $('#inputbarang').val();
             let namaSatuan = $('#nama_satuan').val();
-            let hargaBarang = $('#harga_barang').val();
-            let idVendor = $('#id_vendor').val();
-            let quantity = $('#quantity').val();
+            let hargaBarang = parseInt($('#harga_barang').val());
+            let quantity = parseInt($('#quantity').val());
 
-            console.log(idBarang);
-            console.log(namaBarang);
-            console.log(namaSatuan);
-            console.log(hargaBarang);
-            console.log(idVendor);
-            console.log(quantity);
-           // hitungSubtotal()
 
-            if (!idBarang || !namaBarang || !namaSatuan || !hargaBarang || !idVendor || isNaN(quantity) || quantity <= 0) {
+
+            if (!idBarang || !namaBarang || !namaSatuan || !hargaBarang || isNaN(quantity) || quantity <= 0) {
                 alert('Lengkapi semua data sebelum menambahkan ke daftar list.');
                 return;
-            }
-            else{
+            } else {
                 barangPilih.push({
-                 id_barang: idBarang,
-                 id_vendor:idVendor,
-                   nama_barang: namaBarang,
-                   harga: hargaBarang,
+                    id_barang: idBarang,
+                    nama_barang: namaBarang,
+                    harga: hargaBarang,
                     quantity: quantity,
                     subtotal: hargaBarang,
                 });
@@ -386,10 +415,12 @@
             let existingItem = barangPilih.find(item => item.id_barang === idBarang);
 
             if (existingItem) {
-                // Perbarui quantity dan subtotal JIKA BARANG SUDAH MASUK KE ARRAY 
+                // PERBARUI QUANTITY JIKA BARANG SUDAH MASUK KE ARRAY
                 existingItem.quantity = parseInt(quantity);
                 existingItem.subtotal = parseFloat(hargaBarang) * parseInt(quantity);
             }
+
+            console.log(barangPilih);
 
             // Hitung subtotal
             let subtotal = parseFloat(hargaBarang) * parseInt(quantity);
@@ -403,26 +434,170 @@
                  <input type="hidden" id="harga-${idBarang}" value=${hargaBarang}>
                 <td><input type="number" id="quantity-${idBarang}" value="${quantity}" onchange="updateSubtotal(${idBarang})" style="width=5%;"></td>
                  <td id="subtotal-${idBarang}">${subtotal}</td>
-                <td><button type="button" onclick="hapusBarang(${idBarang})" class="btn btn-danger">Hapus</button></td>
+                <td><button type="button" onclick="hapusBarang(${idBarang})" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button></td>
                 </tr>`;
 
             $('#tableList tbody').append(row);
 
+            totalNilai();
+
+            resetBarang();
+
         };
 
-        function updateSubtotal(idBarang){
+
+        // UPDATE SUB TOTAL BERFUNGSI PADA PERUBAHAN INPUT QUANTITY BERSIFAT ONCHANGE
+        function updateSubtotal(idBarang) {
+
+
+            if ($(`#quantity-${idBarang}`).val() < 0) {
+                alert('QUANTITY TIDAK BOLEH MINUS');
+                $(`#quantity-${idBarang}`).val(0);
+            }
+
             let quantityInput = $(`#quantity-${idBarang}`).val();
             let hargaBarang = $(`#harga-${idBarang}`).val();
-          let index =   barangPilih.findIndex(item=>item.id_barang == idBarang);
-          console.log(`index ke : ${index}`);
-          barangPilih[index].quantity = parseInt(quantityInput);
+            let index = barangPilih.findIndex(item => item.id_barang == idBarang);
+            console.log(`index ke : ${index}`);
+            barangPilih[index].quantity = parseInt(quantityInput);
             barangPilih[index].subtotal = parseFloat(hargaBarang) * parseInt(quantityInput);
 
+            console.log(barangPilih);
+
             $(`#subtotal-${idBarang}`).text(barangPilih[index].subtotal);
+
+            totalNilai()
         }
 
-        function hitungSubtotal() {
+        function totalNilai() {
+            let total = 0;
+            for (let i = 0; i < barangPilih.length; i++) {
+                total += barangPilih[i].subtotal;
+            }
 
-        }
+
+            let ppn = total * (11 / 100);
+
+            let display = total + ppn;
+            let total_nilai = total;
+
+
+
+            $('#value_totalnilai').val(parseInt(total_nilai));
+
+            $('#displayTotal').text(display.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }));
+        };
+
+        function hapusBarang(idBarang) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your List has been deleted.",
+                        icon: "success"
+                    });
+                };
+
+                $(`#row-${idBarang}`).remove();
+
+                let id_barang = parseInt(idBarang);
+
+                console.log('ID :', id_barang);
+
+
+                console.log("Array sebelum dihapus:", barangPilih);
+                let index = barangPilih.findIndex(item => item.id_barang === id_barang);
+
+
+                if (index !== -1) {
+                    barangPilih.splice(index, 1);
+
+
+                    console.log("Array setelah dihapus:", barangPilih);
+                } else {
+                    console.log("Elemen tidak ditemukan dalam array.");
+                }
+
+                totalNilai();
+
+            });
+
+
+
+        };
+
+
+        $(document).ready(function() {
+
+            $(document).on('click', '#simpan', function() {
+                console.log('Tombol Simpan Diklik');
+
+
+                let form = $("#formPengadaan2");
+                let idVendor = parseInt($('#id_vendor').val());
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: {
+                        id_vendor: idVendor,
+                        // ppn: $('#ppn').val(),
+                        subtotal: parseInt($('#value_totalnilai').val()),
+                        barangPilih: JSON.stringify(barangPilih)
+                    },
+
+
+                    success: function(response) {
+                        console.log(response);
+
+                        if (response.message === 'success') {
+
+                                Swal.fire({
+                                    title: "SUCCESS!",
+                                    text: "Data Berhasil Disimpan",
+                                    icon: "success"
+                                }).then((result)=>{
+                                    if(result.isConfirmed){
+                                        window.location.href='/Pengadaan';
+                                    }
+                                });
+
+                            }
+
+                    },
+
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            })
+        });
+
+
+
+
+
+
+
+        //  $('#dataPengadaan').val(dataPilihBarang);
     </script>
 @endsection

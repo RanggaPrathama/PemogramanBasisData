@@ -56,8 +56,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Id Pengadaan</th>
-                                            <th scope="col">Id Vendor</th>
-                                            <th scope="col">Id User</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Vendor</th>
                                             <th scope="col">Sub_Total</th>
                                             <th scope="col">Total_Nilai</th>
                                             <th scope="col">PPN</th>
@@ -67,8 +67,17 @@
                                     </thead>
                                     <tbody>
 
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
 
-                                         
 
                                     </tbody>
 
