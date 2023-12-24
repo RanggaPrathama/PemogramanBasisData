@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ReturController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\UserController;
@@ -111,3 +112,10 @@ Route::post('/pengadaan/store',[PengadaanController::class,'store'])->name('peng
 Route::get('/penerimaan',[PenerimaanController::class,'index'])->name('penerimaan.index');
 Route::get('/penerimaan/create',[PenerimaanController::class,'create'])->name('penerimaan.create');
 Route::get('/penerimaan/detailPengadaan/{id}',[PenerimaanController::class,'detailPengadaan']);
+Route::post('/penerimaan/store',[PenerimaanController::class,'store'])->name('penerimaan.store');
+Route::get('/penerimaan/detail/{id}',[PenerimaanController::class,'detailPenerimaan']);
+
+
+//TABLE RETUR
+Route::get('/retur',[ReturController::class,'index'])->name('retur.index');
+Route::get('/retur/create',[ReturController::class,'create'])->name('retur.create');

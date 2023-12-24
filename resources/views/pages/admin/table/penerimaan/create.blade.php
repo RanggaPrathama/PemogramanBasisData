@@ -4,12 +4,12 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Table Permintaan</h1>
+            <h1>Table Penerimaan</h1>
             <nav>
                 <ol class='breadcrumb'>
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                     <li class="breadcrumb-item">Tables</li>
-                    <li class="breadcrumb-item active">Permintaan Table</li>
+                    <li class="breadcrumb-item active">Penerimaan Table</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -37,7 +37,7 @@
                                         </select>
                                     </div>
 
-                                   
+
                                 </div>
 
 
@@ -73,8 +73,17 @@
                                 </tbody>
                             </table>
                         </div>
+                        <form id="formPenerimaan" action="{{ route('penerimaan.store') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="text-end mt-5">
+                                <button type="button" id="buttonSimpan" class="btn btn-success">Proses
+                                    Penerimaan</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -104,7 +113,8 @@
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" onclick="closeModal()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="closeModal()" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
                             <button type="button" onclick="displayDetail()" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -177,7 +187,7 @@
 
         };
 
-        function closeModal(){
+        function closeModal() {
             dataPenerimaan = [];
             console.log(dataPenerimaan);
         }
@@ -186,7 +196,7 @@
 
             Swal.fire({
                 title: "Are you sure?",
-                text: "You won't be able to revert this!",
+                text: "Anda akan menghilangkan Permintaan barang ini !",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -232,7 +242,7 @@
 
         function updateSubTotal(idDetail) {
             if ($(`#jumlah-${idDetail}`).val() < 0) {
-                alert('Quantity tidak boleh minus');
+                alert('Jumlah tidak boleh minus');
                 $(`#jumlah-${idDetail}`).val(0);
             };
 
@@ -246,6 +256,49 @@
             $(`#subtotal-${idDetail}`).text(dataPenerimaan[index].sub_total_terima);
 
             console.log(dataPenerimaan);
-        }
+        };
+
+        $(document).ready(function() {
+            $(document).on('click', '#buttonSimpan', function() {
+                console.log('diklik');
+
+                let form = $('#formPenerimaan');
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: {
+                        id_pengadaan: parseInt($('#id_pengadaan').val()),
+                        dataPenerimaan: JSON.stringify(dataPenerimaan)
+                    },
+
+
+                    success: function(response) {
+                        if (response.message === 'success') {
+
+                            Swal.fire({
+                                title: "SUCCESS!",
+                                text: "Data Berhasil Disimpan",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/penerimaan';
+                                }
+                            });
+
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            })
+        });
     </script>
 @endsection

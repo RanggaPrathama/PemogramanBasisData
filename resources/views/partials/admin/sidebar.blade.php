@@ -16,7 +16,7 @@
 
       <li class="nav-item">
         <a id="tablesLink" class="nav-link  {{  $isTablesActive ? 'active' : 'collapsed'  }}" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-layout-text-window-reverse"></i><span>Table Master</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse {{ $isTablesActive ? 'show' : '' }} " data-bs-parent="#sidebar-nav">
           <li>
@@ -46,6 +46,23 @@
             </a>
           </li>
 
+
+
+
+        </ul>
+
+
+      </li><!-- End Tables Nav -->
+
+      @php
+      $isTablesActive2 = request()->is('pengadaan*') || request()->is('penerimaan*') || request()->is('retur*') ;
+  @endphp
+      <li class="nav-item">
+        <a id="tablesLink" class="nav-link  {{  $isTablesActive2 ? 'active' : 'collapsed'  }}" data-bs-target="#tables-nav2" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-cash-stack"></i><span>Transaksi</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav2" class="nav-content collapse {{ $isTablesActive2 ? 'show' : '' }} " data-bs-parent="#sidebar-nav">
+
           <li>
             <a class= "nav-link {{ request()->is('pengadaan*') ? 'active' : '' }}" href="{{ route('pengadaan.index') }}">
               <i class="bi bi-circle"></i><span>Pengadaan Table</span>
@@ -56,17 +73,28 @@
             <a class= "nav-link {{ request()->is('penerimaan*') ? 'active' : '' }}" href="{{ route('penerimaan.index') }}">
               <i class="bi bi-circle"></i><span>Penerimaan Table</span>
             </a>
+
+            <li>
+                <a class= "nav-link {{ request()->is('retur*') ? 'active' : '' }}" href="{{ route('retur.index') }}">
+                  <i class="bi bi-circle"></i><span>Retur Table</span>
+                </a>
           </li>
 
 
         </ul>
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('register') ? 'active' : 'collapsed'  }}" href="{{ route('register') }}">
-              <i class="bi bi-box-arrow-in-right"></i>
-              <span>Register</span>
-            </a>
-          </li><!-- End Login Page Nav -->
+
+
       </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {{ request()->is('register') ? 'active' : 'collapsed'  }}" href="{{ route('register') }}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Register</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+
+
 
     </ul>
 

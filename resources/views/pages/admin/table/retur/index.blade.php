@@ -7,13 +7,13 @@
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Table Penerimaan</h1>
+                <h1>Table Retur</h1>
 
                 <nav>
                     <ol class='breadcrumb'>
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item">Tables</li>
-                        <li class="breadcrumb-item active">Penerimaan Table</li>
+                        <li class="breadcrumb-item active">Retur Table</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -43,11 +43,11 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title"> Table Penerimaan</h3>
+                                <h3 class="card-title"> Table Retur</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('penerimaan.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Penerimaan
+                                <a href="{{ route('retur.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Penerimaan
                                 </button></a>
                                 {{-- <a href="{{ route('barang.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
                                 </button></a> --}}

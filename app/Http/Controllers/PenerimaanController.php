@@ -8,15 +8,27 @@ use Illuminate\Support\Facades\DB;
 class PenerimaanController extends Controller
 {
     public function index(){
-        $pengadaans = DB::table('pengadaan as p')->select('p.*','v.nama_vendor','u.username')
-                        ->join('vendor as v','v.id_vendor','=','p.id_vendor')
+        $penerimaans = DB::table('penerimaan as p')->select('p.*','u.username')
                         ->join('user as u','u.id_user','=','p.id_user')
                         ->get();
-        return view('pages.admin.table.penerimaan.index',['pengadaans'=>$pengadaans]);
+        return view('pages.admin.table.penerimaan.index',['penerimaans'=>$penerimaans]);
     }
 
+    public function detailPenerimaan($id){
+        $detailPenerimaan = DB::table('detail_penerimaan as d')
+                            ->select('d.*','b.nama_barang')
+                            ->join('barang as b','b.id_barang','=','d.id_barang')
+                            ->where('d.id_penerimaan','=',$id)
+                            ->get();
+
+
+
+        return response()->json($detailPenerimaan);
+    }
+
+
     public function create(){
-        $pengadaans = DB::table('pengadaan as p')->select('*')->get();
+        $pengadaans = DB::table('pengadaan as p')->select('*')->where('p.status','<>',1) ->get();
         return view('pages.admin.table.penerimaan.create',['pengadaans'=>$pengadaans]);
     }
 
@@ -27,5 +39,15 @@ class PenerimaanController extends Controller
         ->where('d.id_pengadaan','=',$id)
         ->get();
         return response()->json($detailPengadaans);
+    }
+
+    public function store(Request $request){
+        $data = $request->all();
+        $dataPenerimaan = $request->dataPenerimaan;
+        $id_pengadaan = $request->id_pengadaan;
+        $id_user = auth()->user()->id_user;
+
+        DB::select('CALL penerimaan_detailPenerimaan(?,?,?)',[$dataPenerimaan,$id_pengadaan,$id_user]);
+        return response()->json(['message'=>'success']);
     }
 }

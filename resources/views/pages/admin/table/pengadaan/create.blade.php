@@ -577,7 +577,7 @@
                                     icon: "success"
                                 }).then((result)=>{
                                     if(result.isConfirmed){
-                                        window.location.href='/Pengadaan';
+                                        window.location.href='/pengadaan';
                                     }
                                 });
 
