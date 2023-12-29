@@ -47,7 +47,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <a href="{{ route('retur.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Penerimaan
+                                <a href="{{ route('retur.create') }}"><button class='btn btn-primary' style="margin-bottom: 5px"> + Retur
                                 </button></a>
                                 {{-- <a href="{{ route('barang.trash') }}"><button class='btn btn-success' style="margin-bottom: 5px"> Trash <i class="bi bi-trash3"></i>
                                 </button></a> --}}
@@ -55,17 +55,16 @@
 
                                     <thead>
                                         <tr>
+                                            <th scope="col">Id Retur</th>
                                             <th scope="col">Id Penerimaan</th>
-                                            <th scope="col">Id Pengadaan</th>
-                                            <th scope="col">User</th>
+                                            <th scope="col"> ID User</th>
                                             <th scope="col">Created_at</th>
-                                            <th scope="col">Status</th>
 
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($penerimaans as $penerimaan )
+                                        {{-- @foreach ($penerimaans as $penerimaan )
                                         <tr>
                                             <td>{{ $penerimaan->id_penerimaan }}</td>
                                             <td>{{ $penerimaan->id_pengadaan }}</td>
@@ -84,7 +83,7 @@
                                             </td>
                                         </tr>
 
-                                        @endforeach
+                                        @endforeach --}}
 
 
                                     </tbody>

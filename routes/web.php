@@ -119,3 +119,5 @@ Route::get('/penerimaan/detail/{id}',[PenerimaanController::class,'detailPenerim
 //TABLE RETUR
 Route::get('/retur',[ReturController::class,'index'])->name('retur.index');
 Route::get('/retur/create',[ReturController::class,'create'])->name('retur.create');
+Route::get('retur/detilPenerimaan/{id}',[ReturController::class,'detilPenerimaan']);
+
