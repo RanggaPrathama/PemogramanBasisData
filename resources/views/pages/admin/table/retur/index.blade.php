@@ -59,31 +59,24 @@
                                             <th scope="col">Id Penerimaan</th>
                                             <th scope="col"> ID User</th>
                                             <th scope="col">Created_at</th>
-
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($penerimaans as $penerimaan )
+                                        @foreach ($pengembalians as $pengembalian )
                                         <tr>
-                                            <td>{{ $penerimaan->id_penerimaan }}</td>
-                                            <td>{{ $penerimaan->id_pengadaan }}</td>
-                                            <td>{{ $penerimaan->username }}</td>
-                                            <td>{{ $penerimaan->created_at }}</td>
-                                            <td>
-                                            @if ($penerimaan->status == 1)
-                                                <p class="text-success"> SUCCESS</p>
+                                            <td>{{ $pengembalian->id_pengembalian }}</td>
+                                            <td>{{ $pengembalian->id_penerimaan }}</td>
+                                            <td>{{ $pengembalian->username }}</td>
+                                            <td>{{ $pengembalian->created_at }}</td>
 
-                                                 @endif
-
-                                            </td>
 
                                             <td>
-                                                <button class="btn btn-primary" onclick="detail({{ $penerimaan->id_penerimaan}})"> DETAIL </button>
+                                                <button class="btn btn-primary" onclick="detail({{ $pengembalian->id_pengembalian}})"> DETAIL </button>
                                             </td>
                                         </tr>
 
-                                        @endforeach --}}
+                                        @endforeach
 
 
                                     </tbody>
@@ -96,7 +89,7 @@
 
                         <!-- MODAL -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Penerimaan</h1>
@@ -106,12 +99,11 @@
                                   <table  id="tableDetail" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Iddetail_penerimaan</th>
-                                            <th scope="col">Id Penerimaan</th>
-                                            <th scope="col">Id Barang</th>
-                                            <th scope="col">Harga Satuan</th>
+                                            <th scope="col">Iddetail_pengembalian</th>
+                                            <th scope="col">Id Pengembalian</th>
+                                            <th scope="col">Iddetail_Penerimaan</th>
                                             <th scope="col">Jumlah</th>
-                                            <th scope="col">Sub Total</th>
+                                            <th scope="col">Alasan</th>
                                         </tr>
                                     </thead>
                                     <tbody >
@@ -139,7 +131,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: `/penerimaan/detail/${id}`,
+                    url: `/retur/detail/${id}`,
                     dataType: "JSON",
                     success: function (data) {
                         console.log(data);
@@ -150,12 +142,12 @@
                         for(let i=0; i<data.length; i++){
                             let row = `
                                         <tr>
+                                            <td>${data[i].iddetail_pengembalian}</td>
+                                            <td>${data[i].id_pengembalian}</td>
                                             <td>${data[i].iddetail_penerimaan}</td>
-                                            <td>${data[i].id_penerimaan}</td>
-                                            <td>${data[i].id_barang}</td>
-                                            <td>${data[i].harga_satuan_terima}</td>
-                                            <td>${data[i].jumlah_terima}</td>
-                                            <td>${data[i].sub_total_terima}</td>
+                                            <td>${data[i].jumlah}</td>
+                                            <td>${data[i].alasan}</td>
+
                                             </tr>`;
 
                                             $('#tableDetail tbody').append(row);

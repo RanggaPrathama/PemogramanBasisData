@@ -32,14 +32,14 @@ use Illuminate\Support\Facades\Route;
 
 
 //auth
-Route::get('/login',[LoginController::class,'login'])->name('login');
+Route::get('/',[LoginController::class,'login'])->name('login');
 Route::get('/register',[RegisterController::class,'register'])->name('register');
 Route::post('/register',[RegisterController::class,'register_post']);
-Route::post('/login',[LoginController::class,'login_post']);
+Route::post('/',[LoginController::class,'login_post']);
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
 
 // ADMIN Dashboard
-Route::get('/',[adminHomeController::class,'index'])->name('admin.home');
+Route::get('/homeAdmin',[adminHomeController::class,'index'])->name('admin.home');
 
 //Table Role
 Route::get('/role',[RoleController::class,'index'])->name('role.index');
@@ -120,4 +120,5 @@ Route::get('/penerimaan/detail/{id}',[PenerimaanController::class,'detailPenerim
 Route::get('/retur',[ReturController::class,'index'])->name('retur.index');
 Route::get('/retur/create',[ReturController::class,'create'])->name('retur.create');
 Route::get('retur/detilPenerimaan/{id}',[ReturController::class,'detilPenerimaan']);
-
+Route::post('/retur/store',[ReturController::class,'store'])->name('retur.store');
+Route::get('/retur/detail/{id}',[ReturController::class,'detail'])->name('retur.detail');

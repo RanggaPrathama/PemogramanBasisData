@@ -37,7 +37,7 @@ class PenerimaanController extends Controller
                                         AND p.id_pengadaan NOT IN (
                                                  SELECT id_pengadaan
                                                     FROM penerimaan)');
-                                                    
+
         return view('pages.admin.table.penerimaan.create', ['pengadaans' => $pengadaans]);
     }
 
@@ -61,4 +61,6 @@ class PenerimaanController extends Controller
         DB::select('CALL penerimaan_detailPenerimaan(?,?,?)', [$dataPenerimaan, $id_pengadaan, $id_user]);
         return response()->json(['message' => 'success']);
     }
+
+
 }

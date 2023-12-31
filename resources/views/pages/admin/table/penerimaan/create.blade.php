@@ -280,6 +280,7 @@
 
 
                     success: function(response) {
+                        console.log(response);
                         if (response.message === 'success') {
 
                             Swal.fire({

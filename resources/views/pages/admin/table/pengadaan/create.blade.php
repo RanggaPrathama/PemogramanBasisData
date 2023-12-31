@@ -168,7 +168,7 @@
                                 <div class="col-12 d-flex justify-content-between">
                                     <h4 class="card-title">PPN :</h4>
                                     <input type="hidden" value="0.11" id='ppn' name='ppn'>
-                                    <h4 class="card-title" style="font-size: 25px"> 11 % </h4>
+                                    <h4 class="card-title" id="displayPPN" style="font-size: 25px"> 0 </h4>
 
                                 </div>
                                 <div class="col-12 bg-primary text-white text-center">
@@ -477,7 +477,10 @@
 
 
             let ppn = total * (11 / 100);
-
+            $('#displayPPN').text(ppn.toLocaleString('id-ID',{
+                style : 'currency',
+                currency : 'IDR'
+            }));
             let display = total + ppn;
             let total_nilai = total;
 
