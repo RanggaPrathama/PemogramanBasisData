@@ -3,7 +3,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
         @php
-        $isTablesActive = request()->is('role*') || request()->is('vendor*') || request()->is('satuan*') || request()->is('barang*');
+        $isTablesActive = request()->is('user*') || request()->is('role*') || request()->is('vendor*') || request()->is('satuan*') || request()->is('barang*');
     @endphp
       <li class="nav-item">
         <a class=" nav-link {{ request()->routeIs('admin.home') ? 'active' : 'collapsed' }}" id="dashboard-link"  href="{{ route('admin.home') }}">
@@ -87,11 +87,14 @@
       </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {{ request()->is('register') ? 'active' : 'collapsed'  }}" href="{{ route('register') }}">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Register</span>
+        <a class="nav-link {{ request()->is('kartuStock*') ? 'active' : 'collapsed'  }}" href="{{ route('kartuStok.index') }}">
+            <i class="bi bi-clipboard2-data-fill"></i>
+          <span>Kartu Stok</span>
         </a>
+        <!--End Kartu Stock Page Nav -->
       </li><!-- End Login Page Nav -->
+
+
 
 
 

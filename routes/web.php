@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\adminHomeController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\KartuStokController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengadaanController;
@@ -122,3 +123,7 @@ Route::get('/retur/create',[ReturController::class,'create'])->name('retur.creat
 Route::get('retur/detilPenerimaan/{id}',[ReturController::class,'detilPenerimaan']);
 Route::post('/retur/store',[ReturController::class,'store'])->name('retur.store');
 Route::get('/retur/detail/{id}',[ReturController::class,'detail'])->name('retur.detail');
+
+// KARTU STOCK
+Route::get('/kartuStock',[KartuStokController::class,'index'])->name('kartuStok.index');
+Route::get('/kartuStock/detail/{id}',[KartuStokController::class,'detail'])->name('karStok.detail');

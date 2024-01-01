@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use function Laravel\Prompts\select;
+
 class PengadaanController extends Controller
 {
 
@@ -32,6 +34,7 @@ class PengadaanController extends Controller
 
         public function create(){
             $vendors = DB::table('vendor')->select('*')->get();
+           
             return view('pages.admin.table.pengadaan.create',['vendors'=>$vendors]);
         }
         public function caribarang(Request $request)

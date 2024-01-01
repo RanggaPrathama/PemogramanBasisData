@@ -35,8 +35,6 @@
                                     <div class="col-8">
 
 
-
-
                                         <select class="form-select" name="vendor" id="id_vendor">
 
                                             <option value=0 selected> Silahkan Pilih</option>
