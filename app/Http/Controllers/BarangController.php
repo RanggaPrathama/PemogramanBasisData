@@ -7,6 +7,7 @@ use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class BarangController extends Controller
 {
@@ -23,7 +24,7 @@ class BarangController extends Controller
         //         ->get();
 
         // QUERY SQL NATIVE
-        $query = 'SELECT b.id_barang, b.nama_barang , b.jenis, b.status,b.harga, satuan.id_satuan, satuan.nama_satuan
+        $query = 'SELECT b.id_barang, b.nama_barang , b.jenis, b.status,b.harga, satuan.id_satuan, satuan.nama_satuan,b.gambar
                   FROM barang b
                   JOIN satuan ON satuan.id_satuan = b.id_satuan
                   WHERE b.status = ?';
@@ -45,7 +46,7 @@ class BarangController extends Controller
         //     ->get();
 
         //QUERY SQL NATIVE
-        $query = 'SELECT b.id_barang, b.nama_barang, b.jenis, b.status, b.harga, s.id_satuan, s.nama_satuan
+        $query = 'SELECT b.id_barang, b.nama_barang, b.jenis, b.status, b.harga, s.id_satuan, s.nama_satuan,b.gambar
                   FROM barang b
                   JOIN satuan s ON b.id_satuan = s.id_satuan
                   WHERE b.status = ?';
@@ -82,7 +83,8 @@ class BarangController extends Controller
                 'nama_barang' => 'required|unique:barang,nama_barang',
                 'id_satuan' => 'required',
                 'jenis' => 'required',
-                'harga' => 'required|numeric'
+                'harga' => 'required|numeric',
+                'gambar'=>'required'
             ],
             [
                 'nama_barang.required' => 'Nama Barang wajib diisi',
@@ -95,9 +97,15 @@ class BarangController extends Controller
         //QUERY BUILDER
         // $data = DB::table('barang')->insert($validateddata);
 
-        //QUERY NATIVE
-        $query = 'INSERT INTO barang (nama_barang,id_satuan,jenis,harga) VALUES (?,?,?,?)';
-        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga']];
+        if($request->hasFile('gambar')){
+            $gambar = $request->file('gambar')->getClientOriginalName();
+            $request->file('gambar')->storeAs('public/gambar_barang',$gambar);
+            $validateddata['gambar']=$gambar;
+        }
+
+       // QUERY NATIVE
+        $query = 'INSERT INTO barang (nama_barang,id_satuan,jenis,harga,gambar) VALUES (?,?,?,?,?)';
+        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga'],$validateddata['gambar']];
         $sql = DB::insert($query, $values);
         if ($sql) {
             return redirect()->route('barang.index')->with('success', 'Berhasil !');
@@ -149,7 +157,8 @@ class BarangController extends Controller
                 'nama_barang' => 'required',
                 'id_satuan' => 'required',
                 'jenis' => 'required',
-                'harga' => 'required|numeric'
+                'harga' => 'required|numeric',
+                'gambar'=>'required'
             ],
             [
                 'nama_barang.required' => 'Nama Barang wajib diisi',
@@ -164,9 +173,16 @@ class BarangController extends Controller
         // $barangs = DB::table('barang')->where('id_barang',$id);
         // $valid =$barangs->update($validateddata);
 
+        $barang = DB::table('barang')->where('id_barang','=',$id)->first();
+        if($request->hasFile('gambar')){
+            File::delete(storage_path('app/public/gambar_barang') . '/' . $barang->gambar);
+            $gambar= $request->file('gambar')->getClientOriginalName();
+            $request->file('gambar')->storeAs('public/gambar_barang',$gambar);
+            $validateddata['gambar']=$gambar;
+        }
         //QUERY NATIVE
-        $query = 'UPDATE barang SET nama_barang = ?, id_satuan = ?, jenis= ? , harga = ? WHERE id_barang = ?';
-        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga'], $id];
+        $query = 'UPDATE barang SET nama_barang = ?, id_satuan = ?, jenis= ? , harga = ?,gambar=? WHERE id_barang = ?';
+        $values = [$validateddata['nama_barang'], $validateddata['id_satuan'], $validateddata['jenis'], $validateddata['harga'],$validateddata['gambar'], $id];
         $sql = DB::update($query, $values);
         if ($sql) {
             return redirect()->route('barang.index')->with('success', 'Berhasil!');
@@ -221,5 +237,5 @@ class BarangController extends Controller
         }
     }
 
-   
+
 }

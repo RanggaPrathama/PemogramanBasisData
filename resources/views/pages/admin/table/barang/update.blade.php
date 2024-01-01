@@ -69,6 +69,14 @@
                             @enderror
                           </div>
 
+                          <div class="col-12">
+                            <label for="inputNanme4" class="form-label">Gambar</label>
+                            <input type="file" class="form-control @error('gambar') is-invalid @enderror"  name="gambar" >
+                            @error('gambar')
+                              <div class='invalid-feedback'>{{ $message }}</div>
+                            @enderror
+                          </div>
+
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary" style="margin-right: 10px;">Submit</button>
                             <button type="reset" class="btn btn-secondary">Reset</button>

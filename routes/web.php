@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminHomeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KartuStokController;
+use App\Http\Controllers\KasirController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengadaanController;
@@ -99,6 +100,15 @@ Route::put('/barang/restore/{id}',[BarangController::class,'restore'])->name('ba
 Route::get('/barang/trash',[BarangController::class,'trash'])->name('barang.trash');
 Route::put('/barang/restoreall',[BarangController::class,'restoreall'])->name('barang.restoreall');
 
+Route::get('/storage/{path}', function ($path) {
+    $file = storage_path('app/public/' . $path);
+
+    if (file_exists($file)) {
+        return response()->file($file);
+    } else {
+        abort(404);
+    }
+})->where('path', '.*');
 
 
 //TABLE Pengadaan
@@ -127,3 +137,7 @@ Route::get('/retur/detail/{id}',[ReturController::class,'detail'])->name('retur.
 // KARTU STOCK
 Route::get('/kartuStock',[KartuStokController::class,'index'])->name('kartuStok.index');
 Route::get('/kartuStock/detail/{id}',[KartuStokController::class,'detail'])->name('karStok.detail');
+
+
+//TAMPILAN KASIR
+Route::get('/kasir',[KasirController::class,'index'])->name('kasir.home');

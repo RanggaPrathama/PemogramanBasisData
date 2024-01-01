@@ -59,6 +59,7 @@
                                             <th scope="col">Id Satuan</th>
                                             <th scope="col">Nama Satuan</th>
                                             <th scope="col">Nama Barang</th>
+                                            <th scope="col">Gambar</th>
                                             <th scope="col">jenis Barang</th>
                                             <th scope="col">Harga Barang</th>
                                             <th scope="col">Status</th>
@@ -71,6 +72,7 @@
                                                 <th scope="row">{{ $barang->id_barang}}</th>
                                                 <td>{{ $barang->id_satuan }}</td>
                                                 <td>{{ $barang->nama_satuan }}</td>
+                                                <td><img src="{{ url('storage/gambar_barang/' . $barang->gambar)}}" alt="" style="width:55px;"></td>
                                                 <td>{{ $barang->nama_barang }}</td>
                                                 <td>{{ $barang->jenis }}</td>
                                                 <td>{{ $barang->harga }}</td>

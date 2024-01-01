@@ -25,28 +25,21 @@ class LoginController extends Controller
             'password'=>$request->input('password'),
         ];
 
-        // if(Auth::attempt($infoLogin)){
-        //     $request->session()->regenerate();
-        //     return redirect()->route('admin.home')->with('success','Selamat Datang ADMIN !');
-        // }
-        // else{
-        //     return redirect()->back()->with('errors','Gagal !')->withInput();
-        // }
 
-    // $validUser = DB::table('user')
-    // ->where('email', $infoLogin['email'])
-    // ->first();
 
-    $query = 'SELECT * from user where email = ?';
+    $query = 'SELECT * from user join role on role.id_role = user.id_role where email = ?';
     $kondisi = [$infoLogin['email']];
     $validUser = DB::select($query,$kondisi);
 
-    if ($validUser && Hash::check($infoLogin['password'], $validUser[0]->password)) {
+
+    if ($validUser && Hash::check($infoLogin['password'], $validUser[0]->password) && strtoupper( $validUser[0]->nama_role)=='ADMIN') {
         Auth::loginUsingId($validUser[0]->id_user); // Autentikasi pengguna
         $request->session()->regenerate();
         return redirect()->route('admin.home')->with('success', 'Selamat Datang ADMIN!');
     } else {
-        return redirect()->back()->with('errors', 'Gagal!')->withInput();
+        Auth::loginUsingId($validUser[0]->id_user); // Autentikasi pengguna
+        $request->session()->regenerate();
+        return redirect()->route('kasir.home')->with('success', 'Selamat Datang Kasir!');
     }
 
 

@@ -29,17 +29,32 @@ class RegisterController extends Controller
     ]);
 
         // $role = DB::table('role')->select('id_role')->where('nama_role','admin')->first();
+        $users = DB::table('user')->count();
+        if($users>=1){
+            $query = 'SELECT id_role From role WHERE upper(nama_role) LIKE upper(?)';
+            $kondisi = ['user'];
+            $role = DB::select($query,$kondisi);
+            $data = [
+                'id_role'=> $role[0]->id_role,
+                'username'=> $request->input('username'),
+                'email'=> $request->input('email'),
+                'password'=>bcrypt($request->input('password')),
 
-        $query = 'SELECT id_role From role WHERE nama_role LIKE ?';
-        $kondisi = ['admin'];
-        $role = DB::select($query,$kondisi);
-        $data = [
-            'id_role'=> $role[0]->id_role,
-            'username'=> $request->input('username'),
-            'email'=> $request->input('email'),
-            'password'=>bcrypt($request->input('password')),
+            ];
+        }
+        else{
+            $query = 'SELECT id_role From role WHERE upper(nama_role) LIKE upper(?)';
+            $kondisi = ['admin'];
+            $role = DB::select($query,$kondisi);
+            $data = [
+                'id_role'=> $role[0]->id_role,
+                'username'=> $request->input('username'),
+                'email'=> $request->input('email'),
+                'password'=>bcrypt($request->input('password')),
 
-        ];
+            ];
+        };
+
 
     //    $tes= DB::table('user')->insert($data);
 
