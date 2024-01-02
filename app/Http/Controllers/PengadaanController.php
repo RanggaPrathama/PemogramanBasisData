@@ -34,9 +34,9 @@ class PengadaanController extends Controller
 
         public function create(){
             $vendors = DB::table('vendor')->select('*')->get();
-           
             return view('pages.admin.table.pengadaan.create',['vendors'=>$vendors]);
         }
+        
         public function caribarang(Request $request)
         {
             //print_r($request->all());

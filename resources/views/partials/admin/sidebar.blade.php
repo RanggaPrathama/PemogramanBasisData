@@ -45,6 +45,11 @@
               <i class="bi bi-circle"></i><span>Barang Table</span>
             </a>
           </li>
+          <li>
+            <a class= "nav-link {{ request()->is('marginPenjualan*') ? 'active' : '' }}" href="{{ route('marginPenjualan.index') }}">
+              <i class="bi bi-circle"></i><span>Margin Penjualan</span>
+            </a>
+          </li>
 
 
 

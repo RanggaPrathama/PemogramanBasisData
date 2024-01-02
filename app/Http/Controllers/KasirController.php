@@ -10,10 +10,15 @@ class KasirController extends Controller
 {
     public function index(){
        $barangs = DB::select('
-            select b.id_barang, b.nama_barang, b.harga,b.gambar,ks.stock
-            from kartu_stok ks
-            join barang b on b.id_barang = ks.id_barang
-            where (ks.id_barang, ks.created_at) in ( select id_barang,max(created_at) from kartu_stok group by id_barang );
+       SELECT k.stock, k.id_barang, b.nama_barang, k.created_at, k.jenis_transaksi,b.harga,b.gambar
+       FROM kartu_stok k
+       JOIN barang b ON b.id_barang = k.id_barang
+       WHERE (k.id_barang, k.created_at) IN (
+           SELECT id_barang, MAX(created_at) AS max_created_at
+           FROM kartu_stok
+           GROUP BY id_barang
+       ) and k.stock != 0
+       ORDER BY k.created_at,k.id_barang DESC;
         ');
         return view('pages.Kasir.home',['barangs'=>$barangs]);
     }

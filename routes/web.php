@@ -5,6 +5,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KartuStokController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\marginPenjualanController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengadaanController;
 use App\Http\Controllers\RegisterController;
@@ -139,5 +140,9 @@ Route::get('/kartuStock',[KartuStokController::class,'index'])->name('kartuStok.
 Route::get('/kartuStock/detail/{id}',[KartuStokController::class,'detail'])->name('karStok.detail');
 
 
+//MARGIN PENJUALAN
+Route::get('/marginPenjualan',[marginPenjualanController::class,'index'])->name('marginPenjualan.index');
+Route::get('/marginPenjualan/create',[marginPenjualanController::class,'create'])->name('marginPenjualan.create');
+Route::post('/marginPenjualan/store',[marginPenjualanController::class,'store'])->name('marginPenjualan.store');
 //TAMPILAN KASIR
 Route::get('/kasir',[KasirController::class,'index'])->name('kasir.home');
