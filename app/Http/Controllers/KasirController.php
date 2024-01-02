@@ -20,6 +20,12 @@ class KasirController extends Controller
        ) and k.stock != 0
        ORDER BY k.created_at,k.id_barang DESC;
         ');
-        return view('pages.Kasir.home',['barangs'=>$barangs]);
+
+        $margins = DB::select('
+        select *
+        from margin_penjualan
+        order by created_at desc limit 1;
+        ');
+        return view('pages.Kasir.home',['barangs'=>$barangs,'margins'=>$margins]);
     }
 }
