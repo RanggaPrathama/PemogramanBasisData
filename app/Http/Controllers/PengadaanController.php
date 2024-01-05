@@ -36,7 +36,7 @@ class PengadaanController extends Controller
             $vendors = DB::table('vendor')->select('*')->get();
             return view('pages.admin.table.pengadaan.create',['vendors'=>$vendors]);
         }
-        
+
         public function caribarang(Request $request)
         {
             //print_r($request->all());
@@ -51,19 +51,26 @@ class PengadaanController extends Controller
         }
 
         public function store(Request $request){
-            $data = $request->all();
-            $id_vendor = $request->id_vendor;
-            $subTotal = $request->subtotal;
-            $id_user = auth()->user()->id_user;
-            // $ppn = $subtotal * 0.11;
-            // $total_nilai = $subtotal + $ppn;
-            $dataPengadaan = $request->barangPilih;
+            // $data = $request->all();
+
+            DB::beginTransaction();
+            try {
+                $id_vendor = $request->id_vendor;
+                $subTotal = $request->subtotal;
+                $id_user = auth()->user()->id_user;
+
+                $dataPengadaan = $request->barangPilih;
+
+                DB::select('CALL pengadaan_detilPengadaan(?,?,?,?)',[$dataPengadaan,$id_user,$id_vendor,$subTotal]);
+                DB::commit();
+                return response()->json(['message'=>'success']);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['message' => 'error', 'error' => $e->getMessage()]);
+            }
 
 
-
-            DB::select('CALL pengadaan_detilPengadaan(?,?,?,?)',[$dataPengadaan,$id_user,$id_vendor,$subTotal]);
-
-            return response()->json(['message'=>'success']);
+            // return response()->json($data);
         }
 
 

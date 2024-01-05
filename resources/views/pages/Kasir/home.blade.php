@@ -87,27 +87,31 @@
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">Margin Penjualan</h5>
                                 <h5 class="card-title">{{ $margins[0]->persen }}</h5>
-                                <input type="hidden" id="idmargin_penjualan" value={{ $margins[0]->persen }}>
+                                <input type="hidden" id="margin_penjualan" value={{ $margins[0]->persen }}>
+                                <input type="hidden" id="idmargin_penjualan" value={{ $margins[0]->idmargin_penjualan }}>
                             </div>
 
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">Total</h5>
-                                <h5 id="total_nilai" class="card-title">0</h5>
+                                <h5 id="displayTotal" class="card-title">0</h5>
+                                <input type="hidden" id="total_nilai" value=0>
+                                <input type="hidden" id="total_bayar" value=0>
                             </div>
 
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">Bayar</h5>
                                 <input id="pembayaran" type="number" class="form-control"
-                                    style="height:40px; width:30%; margin-top:10px">
+                                    style="height:40px; width:30%; margin-top:10px" value=0 readonly>
                             </div>
 
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">Uang Kembali</h5>
                                 <input id="kembalian" type="number" class="form-control"
-                                    style="height:40px; width:30%; margin-top:10px" readonly>
+                                    style="height:40px; width:30%; margin-top:10px" value=0 readonly>
                             </div>
                         </div>
-                        <form id="formRetur" action="" method="POST" enctype="multipart/form-data">
+                        <form id="formKasir" action="{{ route('kasir.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="text-end">
                                 <button type="button" id="buttonSimpan" class="btn btn-success">Proses
@@ -135,7 +139,9 @@
     <script>
         let dataPenjualan = [];
 
+        //  PILIH BARANG
         function pilihBarang(idBarang, namaBarang, hargaBarang, stok) {
+
             let idbarang = parseInt(idBarang);
             let hargasatuan = parseInt(hargaBarang);
             let Stok = parseInt(stok);
@@ -159,18 +165,25 @@
                     subtotal: hargasatuan,
                     stock: Stok
                 });
+                updateStokView(idBarang);
+                detailPenjualan();
+            };
 
+
+            if (dataPenjualan.length >= 1) {
+                $('#pembayaran').prop('readonly', false);
             } else {
                 alert('Barang Sudah Dipilih');
             }
+
             console.log(dataPenjualan);
 
-            updateStokView(idBarang);
-            detailPenjualan();
+
         };
 
         //UNTUK UPDATE STOCK SETELAH MEMASUKKAN KE ARRAY
         function updateStokView(idBarang) {
+
             let stokBarang = findStokById(idBarang);
             if (stokBarang !== undefined) {
                 let index = dataPenjualan.findIndex(item => item.id_barang === idBarang);
@@ -193,6 +206,10 @@
         };
 
         function detailPenjualan() {
+
+            $('#pembayaran').val('');
+            $('#kembalian').val('');
+
             $('#detilPenjualan tbody').empty();
             dataPenjualan.forEach((detail) => {
 
@@ -211,8 +228,54 @@
                 $('#detilPenjualan tbody').append(row);
 
             });
+
+            totalNilai();
         };
 
+        //Menghapus Data List Penjualan
+        function hapusData(idBarang) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your List has been deleted.",
+                        icon: "success"
+                    });
+
+                    $(`#row-${idBarang}`).remove();
+                    let index = dataPenjualan.findIndex(item => item.id_barang === idBarang);
+                    let stockTambah = dataPenjualan[index].stock += dataPenjualan[index].jumlah;
+                    $(`#stok-${idBarang}`).text(stockTambah);
+                    if (index !== -1) {
+                        dataPenjualan.splice(index, 1);
+
+                    };
+                    console.log(dataPenjualan);
+                    totalNilai();
+
+                    if (dataPenjualan.length < 1) {
+                        $('#pembayaran').prop('readonly', true);
+                        $('#pembayaran').val('');
+                        $('#kembalian').val('');
+                    } else {
+                        $('#pembayaran').val('');
+                        $('#kembalian').val('');
+                    };
+                }
+            });
+
+        }
+
+        //update sub total setiap merubah jumlah (onchange)
         function updateSubTotal(idBarang) {
             let Jumlah = $(`#jumlah-${idBarang}`).val();
             let Harga = $(`#harga-${idBarang}`).val();
@@ -222,24 +285,132 @@
 
             $(`#subtotal-${idBarang}`).text(dataPenjualan[index].subtotal);
 
-           let jumlahTes =  $(`#jumlahTes-${idBarang}`).val();
+            let jumlahTes = $(`#jumlahTes-${idBarang}`).val();
 
-            if(jumlahTes<= dataPenjualan[index].jumlah){
-                let stock =dataPenjualan[index].stock -= 1;
+            if (jumlahTes <= dataPenjualan[index].jumlah) {
+                let stock = dataPenjualan[index].stock -= 1;
                 $(`#jumlahTes-${idBarang}`).val(dataPenjualan[index].jumlah);
                 $(`#stok-${idBarang}`).text(stock);
 
+            } else {
+                let stock = dataPenjualan[index].stock += 1;
+                $(`#jumlahTes-${idBarang}`).val(dataPenjualan[index].jumlah);
+                $(`#stok-${idBarang}`).text(stock);
+
+            };
+
+            console.log(dataPenjualan);
+            totalNilai();
+
+        };
+
+        //MENGATUR MENGOLAH DATA TOTAL NILAI
+        function totalNilai() {
+
+            let total = 0;
+
+            for (let i = 0; i < dataPenjualan.length; i++) {
+                total += dataPenjualan[i].subtotal;
             }
-            else{
-               let stock = dataPenjualan[index].stock +=1;
-               $(`#jumlahTes-${idBarang}`).val(dataPenjualan[index].jumlah);
-               $(`#stok-${idBarang}`).text(stock);
+            console.log(total);
+            //Memasukkan ke Input
+            $('#total_nilai').val(parseInt(total));
 
-            }
+            //HITUNG PPN
+            let ppn = total * 0.11;
+            console.log(ppn);
+            $('#ppn').text(ppn.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }));
 
-            // dataPenjualan[index].stock -= parseInt(Jumlah);
+            //HITUNG MARGIN PENJUALAN
+            let marginPenjualan = parseFloat($('#margin_penjualan').val());
+            console.log(marginPenjualan);
+            let hasilMargin = marginPenjualan * total;
+            console.log(`Keuntungan : ${parseInt(hasilMargin)} `);
 
+            // RUMUS HITUNG SUBTOTAL DENGAN MARGIN + PPN
+            //SUBTOTAL + (SUBTOTAL * PPN ) + (SUBTOTAL * MARGINPENJUALAN)
+
+            let displayTotal = total + parseInt(ppn) + (parseInt(hasilMargin));
+
+            $('#total_bayar').val(parseInt(displayTotal));
+
+            $('#displayTotal').text(displayTotal.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }));
 
         }
+
+        //SETIAP INPUT CHANGE DI  ID PEMBAYARAN
+
+        $(document).ready(function() {
+            $('#pembayaran').on('input', function() {
+                let bayar = this.value;
+
+                pembayaranKembalian();
+            })
+        });
+
+        //PROSES MENGOLAH DATA UNTUK KEMBALIAN
+        function pembayaranKembalian() {
+
+            let bayar = $('#pembayaran').val();
+            let totalBayar = $('#total_bayar').val();
+            let kembalian = bayar - totalBayar;
+
+            if (bayar >= totalBayar) {
+                let kembalian = bayar - totalBayar;
+                $('#kembalian').val(kembalian);
+            } else {
+                $('#kembalian').val(0);
+            };
+        }
+
+        // AJAX POST MENGIRIM KE CONTROLLER
+
+        $(document).ready(function() {
+            $(document).on('click', '#buttonSimpan', function() {
+                let form = $('#formKasir');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: {
+                        dataPenjualan: JSON.stringify(dataPenjualan),
+                        subtotal: parseInt($('#total_nilai').val()),
+                        id_marginPenjualan: parseInt($('#idmargin_penjualan').val())
+                    },
+                    dataType: "JSON",
+                    success: function(response) {
+                        console.log(response);
+
+                        if (response.message === 'success') {
+
+                            Swal.fire({
+                                title: "SUCCESS!",
+                                text: "Data Berhasil Disimpan",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            })
+        });
     </script>
 @endsection

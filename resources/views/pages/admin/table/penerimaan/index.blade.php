@@ -80,7 +80,7 @@
                                             </td>
 
                                             <td>
-                                                <button class="btn btn-primary" onclick="detail({{ $penerimaan->id_penerimaan}})"> DETAIL </button>
+                                                <button class="btn btn-primary" onclick="detail({{ $penerimaan->id_pengadaan}})"> DETAIL </button>
                                             </td>
                                         </tr>
 
@@ -112,6 +112,7 @@
                                             <th scope="col">Id Barang</th>
                                             <th scope="col">Harga Satuan</th>
                                             <th scope="col">Jumlah</th>
+                                            <th scope="col">Belum Diterima</th>
                                             <th scope="col">Sub Total</th>
                                         </tr>
                                     </thead>
@@ -155,7 +156,8 @@
                                             <td>${data[i].id_penerimaan}</td>
                                             <td>${data[i].id_barang}</td>
                                             <td>${data[i].harga_satuan_terima}</td>
-                                            <td>${data[i].jumlah_terima}</td>
+                                            <td>${data[i].jumlah_Terima}</td>
+                                            <td>${data[i].YangBelumDiterima}</td>
                                             <td>${data[i].sub_total_terima}</td>
                                             </tr>`;
 

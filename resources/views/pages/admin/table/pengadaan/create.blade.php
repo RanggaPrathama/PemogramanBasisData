@@ -4,7 +4,7 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Table Role</h1>
+            <h1>Table Pengadaan</h1>
 
             <nav>
                 <ol class='breadcrumb'>
@@ -339,37 +339,6 @@
             $('#harga_barang').val(hargaBarang);
             // let idVendor =  $('#id_vendor').val('');
             $('#quantity').prop('readonly', false).select();
-
-
-
-            //let Item = barangPilih.find(item => item.id_barang == idBarang);
-
-            // if (Item) {
-            //      alert('Barang Sudah Dipilih');
-            //  } else {
-            //      barangPilih.push({
-            //          id_barang: idBarang,
-            //          id_vendor:idVendor,
-            //          nama_barang: namaBarang,
-            //          harga: hargaBarang,
-            //          quantity: 1, //DEFAULT BRO TAK KASIH 1
-            //          subtotal: hargaBarang,
-            //      });
-            //    };
-
-
-            // if (barangPilih.some(barang => barang.id_barang == idBarang)) {
-            //     alert('Barang Sudah Dipilih');
-            //     return;
-            // }
-
-            // barangPilih.push({
-            //     id_barang: idBarang,
-            //     nama_barang: namaBarang,
-            //     harga: hargaBarang,
-            // });
-
-
 
         };
 

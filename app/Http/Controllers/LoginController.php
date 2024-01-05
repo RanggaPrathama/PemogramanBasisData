@@ -36,10 +36,13 @@ class LoginController extends Controller
         Auth::loginUsingId($validUser[0]->id_user); // Autentikasi pengguna
         $request->session()->regenerate();
         return redirect()->route('admin.home')->with('success', 'Selamat Datang ADMIN!');
-    } else {
+    } else if($validUser && Hash::check($infoLogin['password'], $validUser[0]->password) && strtoupper( $validUser[0]->nama_role)=='USER' ) {
         Auth::loginUsingId($validUser[0]->id_user); // Autentikasi pengguna
         $request->session()->regenerate();
         return redirect()->route('kasir.home')->with('success', 'Selamat Datang Kasir!');
+    }
+    else{
+        return redirect()->back()->with(['errors'=>'salah']);
     }
 
 

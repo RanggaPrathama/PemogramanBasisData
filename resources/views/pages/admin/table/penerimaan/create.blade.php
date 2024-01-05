@@ -87,7 +87,7 @@
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg ">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
@@ -101,6 +101,8 @@
                                         <th>Barang</th>
                                         <th>harga</th>
                                         <th>jumlah</th>
+                                        <th>Jumlah Terima</th>
+                                        <th>Yang Belum Diterima</th>
                                         <th>sub total</th>
                                         <th>action</th>
                                     </tr>
@@ -152,6 +154,8 @@
                                             <td>${data[i].nama_barang}</td>
                                             <td>${data[i].harga_satuan}</td>
                                             <td>${data[i].jumlah}</td>
+                                            <td>${data[i].jumlah_terima}</td>
+                                            <td>${data[i].YangBelumDiterima}</td>
                                             <td>${data[i].sub_total}</td>
                                             <td><button type="button" onclick='hapusData(${data[i].iddetail_pengadaan})' class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button></td>
                                         </tr>`;

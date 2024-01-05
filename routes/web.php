@@ -146,3 +146,7 @@ Route::get('/marginPenjualan/create',[marginPenjualanController::class,'create']
 Route::post('/marginPenjualan/store',[marginPenjualanController::class,'store'])->name('marginPenjualan.store');
 //TAMPILAN KASIR
 Route::get('/kasir',[KasirController::class,'index'])->name('kasir.home');
+Route::post('/kasir/store',[KasirController::class,'store'])->name('kasir.store');
+
+
+Route::get('/struk',[KasirController::class,'struk']);

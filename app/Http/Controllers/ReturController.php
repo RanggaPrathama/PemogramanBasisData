@@ -42,17 +42,20 @@ class ReturController extends Controller
     }
 
     public function store(Request $request){
+        DB::beginTransaction();
         try {
             $tes = $request->all();
             $idUser = auth()->user()->id_user;
             $idPenerimaan = $request->id_penerimaan;
             $dataRetur = $request->dataRetur;
-            DB::select('CALL pengembalian_detailPengembalian(?,?,?)',[$dataRetur,$idPenerimaan,$idUser]);
 
+            DB::select('CALL pengembalian_detailPengembalian(?,?,?)',[$dataRetur,$idPenerimaan,$idUser]);
+            DB::commit();
             return response()->json(['message'=>'success']);
 
-        } catch (\Throwable $th) {
-            return response()->json(['error'=>$th->getMessage()]);
+        }catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'error', 'error' => $e->getMessage()]);
         }
 }
 }
